@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SF6 COMBO DB - データ移行ツール</title>
+<style>
+:root {
+  --bg: #0c0d14;
+  --surface: #13141f;
+  --surface2: #1a1b2a;
+  --border: #2a2b3d;
+  --text: #e0e0f0;
+  --text-muted: #6b6c80;
+  --green: #2ea043;
+  --red: #e63946;
+  --blue: #4a9eff;
+  --yellow: #f0a500;
+  --radius: 8px;
+  --font: system-ui, 'Segoe UI', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; padding: 32px 24px; max-width: 720px; margin: 0 auto; }
+h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.desc { color: var(--text-muted); font-size: 13px; margin-bottom: 28px; line-height: 1.6; }
+
+.section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+.section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 6px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; font-family: var(--font); transition: opacity 0.15s; }
+.btn:hover { opacity: 0.85; }
+.btn:disabled { opacity: 0.38; cursor: not-allowed; }
+.btn-primary  { background: var(--red);    color: #fff; }
+.btn-secondary{ background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-success  { background: var(--green);  color: #fff; }
+
+.file-row { display: flex; align-items: center; gap: 10px; }
+.file-name { color: var(--text-muted); font-size: 12px; }
+
+.stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 18px; text-align: center; min-width: 80px; }
+.stat-num   { font-size: 26px; font-weight: 700; line-height: 1; }
+.stat-label { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+.result-item { display: flex; align-items: flex-start; gap: 8px; padding: 9px 12px; border-radius: 6px; margin-bottom: 8px; font-size: 13px; line-height: 1.5; }
+.result-item .icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+.r-ok   { background: rgba(46,160,67,0.1);  border: 1px solid rgba(46,160,67,0.3);  color: #7ee787; }
+.r-warn { background: rgba(240,165,0,0.1);  border: 1px solid rgba(240,165,0,0.3);  color: #f0a500; }
+.r-info { background: rgba(74,158,255,0.1); border: 1px solid rgba(74,158,255,0.3); color: #4a9eff; }
+.r-error{ background: rgba(230,57,70,0.1);  border: 1px solid rgba(230,57,70,0.3);  color: #ff8090; }
+
+.divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+.all-ok { font-weight: 600; }
+</style>
+</head>
+<body>
+
+<h1>SF6 COMBO DB データ移行ツール</h1>
+<p class="desc">
+  旧バージョンのJSONを現行仕様に変換します。元ファイルは変更されません。<br>
+  <strong>実行前に必ずエクスポートでバックアップを取ってください。</strong>
+</p>
+
+<!-- Step 1 -->
+<div class="section">
+  <div class="section-title">Step 1 — JSONファイルを読み込む</div>
+  <div class="file-row">
+    <button class="btn btn-secondary" onclick="document.getElementById('fileInp').click()">📂 ファイルを選択</button>
+    <input type="file" id="fileInp" accept=".json" style="display:none" onchange="loadFile(this)">
+    <span class="file-name" id="fileName">未選択</span>
+  </div>
+</div>
+
+<!-- Step 2 -->
+<div class="section" id="analysisSection" style="display:none">
+  <div class="section-title">Step 2 — 解析結果</div>
+  <div class="stats" id="statsArea"></div>
+  <div id="resultsArea"></div>
+</div>
+
+<!-- Step 3 -->
+<div class="section" id="downloadSection" style="display:none">
+  <div class="section-title">Step 3 — 修正済みデータをダウンロード</div>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px">上記の問題を自動修正したJSONをダウンロードします。このファイルをアプリにインポートしてください。</p>
+  <button class="btn btn-success" onclick="downloadFixed()">⬇ 修正済みJSONをダウンロード</button>
+</div>
+
+<script>
+'use strict';
+let _fixed = null;
+
+/* ── キャラクターマスタ（固定ID） ── */
+const CHAR_MASTER = [
+  { id:  1, name: 'リュウ' },      { id:  2, name: 'ルーク' },
+  { id:  3, name: 'ジェイミー' },  { id:  4, name: '春麗' },
+  { id:  5, name: 'ガイル' },      { id:  6, name: 'キンバリー' },
+  { id:  7, name: 'ジュリ' },      { id:  8, name: 'ケン' },
+  { id:  9, name: 'ブランカ' },    { id: 10, name: 'ダルシム' },
+  { id: 11, name: 'エドモンド本田' }, { id: 12, name: 'ザンギエフ' },
+  { id: 13, name: 'ディージェイ' }, { id: 14, name: 'マノン' },
+  { id: 15, name: 'マリーザ' },    { id: 16, name: 'JP' },
+  { id: 17, name: 'リリー' },      { id: 18, name: 'キャミィ' },
+  { id: 19, name: 'ラシード' },    { id: 20, name: 'A.K.I.' },
+  { id: 21, name: 'エド' },        { id: 22, name: '豪鬼' },
+  { id: 23, name: 'ベガ' },        { id: 24, name: 'テリー' },
+  { id: 25, name: '舞' },          { id: 26, name: 'エレナ' },
+  { id: 27, name: 'サガット' },    { id: 28, name: 'C.ヴァイパー' },
+  { id: 29, name: 'アレックス' },
+];
+
+/* ── UUID生成 ── */
+function uid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+/* ── システムタグID一覧（現行仕様） ── */
+const DIR_MAP = { 'N':'5','↑':'8','↓':'2','←':'4','→':'6','↗':'9','↘':'3','↙':'1','↖':'7' };
+const STR_MAP = { '小':'L','中':'M','大':'H' };
+
+const SYS_IDS = (() => {
+  const s = new Set();
+  // クラシック通常技: 2LP, 5MK など
+  for (const dn of Object.values(DIR_MAP)) for (const sc of Object.values(STR_MAP)) for (const tp of ['P','K'])
+    s.add(`${dn}${sc}${tp}`);
+  // モダン通常技: 2L, 5M など
+  for (const dn of Object.values(DIR_MAP)) for (const sc of Object.values(STR_MAP))
+    s.add(`${dn}${sc}`);
+  // SP入力
+  ['5SP','2SP','4SP','6SP','8SP'].forEach(id => s.add(id));
+  // その他共通
+  ['CR','SA1','SA2','SA3','CA','DI','投げ','前歩き','前ステ','生ラッシュ','前ジャンプ'].forEach(id => s.add(id));
+  return s;
+})();
+
+/* ── 旧形式通常技ID（sys_xxx）→ 新形式マップ ── */
+const OLD_SYS_MAP = new Map();
+for (const [d, dn] of Object.entries(DIR_MAP))
+  for (const [s, sc] of Object.entries(STR_MAP))
+    for (const tp of ['P','K'])
+      OLD_SYS_MAP.set(`sys_${d}${s}${tp}`, `${dn}${sc}${tp}`);
+
+/* ── ファイル読み込み ── */
+function loadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('fileName').textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      analyzeAndFix(data);
+    } catch (err) {
+      alert('JSONの解析に失敗しました: ' + err.message);
+    }
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+/* ── メイン処理 ── */
+function analyzeAndFix(data) {
+  const d      = JSON.parse(JSON.stringify(data)); // deep clone
+  const chars  = d.characters || [];
+  const tags   = d.moveTags   || [];
+  const combos = d.combos     || [];
+
+  const issues = []; // { level: 'ok'|'warn'|'info'|'error', msg }
+  const fixes  = []; // 修正内容サマリ
+
+  /* ── 1. キャラクターID正規化（CHAR_MASTERへのリマップ＋重複排除） ── */
+  const masterByName = new Map(CHAR_MASTER.map(c => [c.name, c.id]));
+  const charIdRemap  = new Map(); // JSON内charId → 正規ID
+  const charsToDrop  = new Set();
+  const seenCanonIds = new Set();
+
+  for (const c of chars) {
+    const canonId = masterByName.get(c.name);
+    if (canonId != null) {
+      // CHAR_MASTERにあるキャラ
+      if (c.id !== canonId) {
+        charIdRemap.set(c.id, canonId);
+        charIdRemap.set(String(c.id), canonId);
+      }
+      if (seenCanonIds.has(canonId)) {
+        charsToDrop.add(c.id); // 重複エントリを除去
+      } else {
+        seenCanonIds.add(canonId);
+        c.id = canonId; // IDを正規化
+      }
+    } else {
+      // CHAR_MASTERにない独自キャラはそのまま保持
+    }
+  }
+
+  const idRemapCount  = [...charIdRemap.values()].filter((v, i, a) => a.indexOf(v) === i).length;
+  const dupDropCount  = charsToDrop.size;
+
+  if (idRemapCount > 0 || dupDropCount > 0) {
+    const msgs = [];
+    if (idRemapCount > 0) msgs.push(`${idRemapCount}件のIDをCHAR_MASTERの固定IDに統一`);
+    if (dupDropCount > 0) msgs.push(`重複 ${dupDropCount}件を除去`);
+    issues.push({ level: 'warn', msg: `キャラクターID正規化：${msgs.join('、')}` });
+    fixes.push(`キャラID正規化（${msgs.join('、')}）`);
+    for (const combo of combos) {
+      const mapped = charIdRemap.get(combo.charId) ?? charIdRemap.get(String(combo.charId));
+      if (mapped != null) combo.charId = mapped;
+    }
+    d.characters = chars.filter(c => !charsToDrop.has(c.id));
+  } else {
+    issues.push({ level: 'ok', msg: 'キャラクターID・重複に問題なし' });
+  }
+
+  /* ── 2. moveTag 数値ID → UUID 変換 ── */
+  const tagIdMap     = new Map(); // 旧ID(number|numStr) → 新UUID
+  const numericTags  = tags.filter(t => typeof t.id === 'number');
+
+  if (numericTags.length > 0) {
+    issues.push({ level: 'warn', msg: `moveTag 数値ID ${numericTags.length}件 → UUID形式に変換` });
+    fixes.push(`moveTag UUID変換 ${numericTags.length}件`);
+    for (const t of numericTags) {
+      const newId = uid();
+      tagIdMap.set(t.id, newId);
+      tagIdMap.set(String(t.id), newId);
+      t.id = newId;
+    }
+    // combo.route と labels に反映
+    for (const combo of combos) {
+      combo.route = (combo.route || []).map(item => {
+        if (item.type === 'move' && tagIdMap.has(item.tagId))
+          return { ...item, tagId: tagIdMap.get(item.tagId) };
+        return item;
+      });
+      combo.labels = (combo.labels || []).map(lid =>
+        tagIdMap.has(lid) ? tagIdMap.get(lid) :
+        tagIdMap.has(String(lid)) ? tagIdMap.get(String(lid)) : lid
+      );
+    }
+  } else {
+    issues.push({ level: 'ok', msg: 'moveTag ID はすべてUUID形式' });
+  }
+
+  /* ── 3. 旧形式通常技ID（sys_xxx）→ 新形式（2LP等）変換 ── */
+  let sysConvCount = 0;
+  for (const combo of combos) {
+    combo.route = (combo.route || []).map(item => {
+      if (item.type === 'move' && typeof item.tagId === 'string' && OLD_SYS_MAP.has(item.tagId)) {
+        sysConvCount++;
+        return { ...item, tagId: OLD_SYS_MAP.get(item.tagId) };
+      }
+      return item;
+    });
+  }
+  if (sysConvCount > 0) {
+    issues.push({ level: 'warn', msg: `旧形式通常技ID（sys_xxx）${sysConvCount}件 → 新形式（2LP等）に変換` });
+    fixes.push(`通常技ID変換 ${sysConvCount}件`);
+  } else {
+    issues.push({ level: 'ok', msg: '旧形式通常技ID（sys_xxx）なし' });
+  }
+
+  /* ── 4. ラベルタグ kind 修正 ── */
+  const labelIdSet = new Set();
+  for (const combo of combos) (combo.labels || []).forEach(id => labelIdSet.add(String(id)));
+
+  const finalTags = d.moveTags || tags;
+  const labelKindFix = finalTags.filter(t => t.kind === 'custom' && labelIdSet.has(String(t.id)));
+
+  if (labelKindFix.length > 0) {
+    issues.push({ level: 'warn', msg: `ラベルタグの kind が "custom" のまま ${labelKindFix.length}件 → "label" に修正` });
+    fixes.push(`ラベルタグ kind修正 ${labelKindFix.length}件`);
+    for (const t of finalTags) {
+      if (t.kind === 'custom' && labelIdSet.has(String(t.id))) t.kind = 'label';
+    }
+  } else {
+    issues.push({ level: 'ok', msg: 'ラベルタグ種別に問題なし' });
+  }
+
+  /* ── 5. 不明tagID（dangling）除去 ── */
+  const knownTagIds = new Set(finalTags.map(t => String(t.id)));
+  let danglingItems = 0;
+  let danglingCombos = 0;
+
+  for (const combo of combos) {
+    const before = (combo.route || []).length;
+    combo.route = (combo.route || []).filter(item => {
+      if (item.type !== 'move') return true;
+      const tid = String(item.tagId);
+      return SYS_IDS.has(item.tagId) || SYS_IDS.has(tid) || knownTagIds.has(tid);
+    });
+    const removed = before - combo.route.length;
+    if (removed > 0) { danglingItems += removed; danglingCombos++; }
+  }
+
+  if (danglingItems > 0) {
+    issues.push({ level: 'warn', msg: `解決不能なtagId参照 ${danglingItems}件を ${danglingCombos}件のコンボから除去（削除済みタグへの参照）` });
+    fixes.push(`dangling tagId ${danglingItems}件除去`);
+  } else {
+    issues.push({ level: 'ok', msg: '解決不能なtagId参照なし' });
+  }
+
+  /* ── 6. sortOrder 自動付与（カスタムタグのみ） ── */
+  const needSortOrder = finalTags.filter(t => t.kind === 'custom' && t.sortOrder == null);
+  if (needSortOrder.length > 0) {
+    issues.push({ level: 'info', msg: `sortOrder未設定のカスタムタグ ${needSortOrder.length}件 → 自動採番` });
+    fixes.push(`sortOrder自動付与 ${needSortOrder.length}件`);
+    // charIdグループ別に現在の最大値を取得してから採番
+    const maxByGroup = new Map();
+    for (const t of finalTags) {
+      if (t.kind !== 'custom' || t.sortOrder == null) continue;
+      const key = t.charId == null ? '__common__' : String(t.charId);
+      maxByGroup.set(key, Math.max(maxByGroup.get(key) || 0, t.sortOrder));
+    }
+    for (const t of needSortOrder) {
+      const key = t.charId == null ? '__common__' : String(t.charId);
+      const next = (maxByGroup.get(key) || 0) + 10;
+      t.sortOrder = next;
+      maxByGroup.set(key, next);
+    }
+  } else {
+    issues.push({ level: 'ok', msg: 'sortOrder は全件設定済み' });
+  }
+
+  _fixed = d;
+
+  /* ── 統計表示 ── */
+  const statsEl = document.getElementById('statsArea');
+  statsEl.innerHTML = `
+    <div class="stat"><div class="stat-num">${(d.characters || []).length}</div><div class="stat-label">キャラクター</div></div>
+    <div class="stat"><div class="stat-num">${(d.moveTags   || []).length}</div><div class="stat-label">タグ</div></div>
+    <div class="stat"><div class="stat-num">${(d.combos     || []).length}</div><div class="stat-label">コンボ</div></div>
+    <div class="stat"><div class="stat-num" style="color:${fixes.length > 0 ? 'var(--yellow)' : 'var(--green)'}">${fixes.length}</div><div class="stat-label">修正項目</div></div>
+  `;
+
+  /* ── 結果リスト表示 ── */
+  const cls = { ok: 'r-ok', warn: 'r-warn', info: 'r-info', error: 'r-error' };
+  const icon = { ok: '✓', warn: '⚠', info: 'ℹ', error: '✗' };
+  const resultsEl = document.getElementById('resultsArea');
+  resultsEl.innerHTML = issues.map(i =>
+    `<div class="result-item ${cls[i.level]}"><span class="icon">${icon[i.level]}</span><span>${i.msg}</span></div>`
+  ).join('');
+
+  if (fixes.length === 0) {
+    resultsEl.innerHTML += `<hr class="divider"><div class="result-item r-ok all-ok"><span class="icon">✓</span><span>問題は見つかりませんでした。修正は不要です。</span></div>`;
+  } else {
+    resultsEl.innerHTML += `<hr class="divider"><div class="result-item r-info"><span class="icon">ℹ</span><span>修正内容：${fixes.join('、')}</span></div>`;
+  }
+
+  document.getElementById('analysisSection').style.display = '';
+  document.getElementById('downloadSection').style.display = fixes.length > 0 ? '' : 'none';
+}
+
+/* ── ダウンロード ── */
+function downloadFixed() {
+  if (!_fixed) return;
+  const json = JSON.stringify(_fixed, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = Object.assign(document.createElement('a'), {
+    href: url,
+    download: `sf6combo_migrated_${new Date().toISOString().slice(0, 10)}.json`
+  });
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>

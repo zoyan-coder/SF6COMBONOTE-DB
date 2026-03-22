@@ -1,0 +1,4 @@
+sf6combo_*.html
+!sf6combo_migrate.html
+*.json
+personal/

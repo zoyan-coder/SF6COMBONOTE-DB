@@ -1,0 +1,3102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SF6 COMBO NOTE DB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0d14;
+  --surface: #141520;
+  --surface2: #1a1b2a;
+  --surface3: #1e1f30;
+  --border: #232438;
+  --border2: #2e2f4a;
+  --red: #e8003d;
+  --red-dim: #6a001c;
+  --red-glow: rgba(232,0,61,0.25);
+  --gold: #f5b731;
+  --gold-dim: #6b4b00;
+  --green: #2ea043;
+  --text: #d0d0e8;
+  --text-muted: #7a7b9e;
+  --text-dim: #9a9bb8;
+  --chip-move-bg: #22243c;
+  --chip-move-border: #3c3e62;
+  --chip-cond-bg: #211400;
+  --chip-cond-border: #7a5500;
+  --font-display: 'Bebas Neue', 'Impact', sans-serif;
+  --font-body: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic UI', sans-serif;
+  --radius: 5px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── HEADER ─────────────────────────────── */
+header {
+  background: var(--surface);
+  border-bottom: 2px solid var(--red);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: 54px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+.logo {
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: 3px;
+  color: var(--red);
+  text-shadow: 0 0 18px var(--red-glow);
+  flex-shrink: 0;
+  user-select: none;
+}
+.logo span { color: var(--gold); }
+nav { display: flex; gap: 2px; }
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 18px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  border-radius: var(--radius);
+  transition: all 0.15s;
+  border-bottom: 2px solid transparent;
+}
+.nav-btn:hover { color: var(--text); background: var(--surface2); }
+.nav-btn.active { color: var(--red); border-bottom-color: var(--red); }
+
+/* ── MAIN ────────────────────────────────── */
+main { max-width: 1100px; margin: 0 auto; padding: 22px 22px 60px; }
+
+/* ── BUTTONS ─────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  padding: 7px 16px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-primary { background: var(--red); color: #fff; border-color: var(--red); }
+.btn-primary:hover { background: #ff1a53; box-shadow: 0 0 12px var(--red-glow); }
+.btn-secondary { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+.btn-secondary:hover { background: var(--surface3); border-color: var(--border2); }
+.btn-ghost { background: transparent; color: var(--text-dim); border-color: var(--border); }
+.btn-ghost:hover { color: var(--text); border-color: var(--border2); background: var(--surface2); }
+.btn-danger { background: transparent; color: #e86868; border-color: #4a1a1a; }
+.btn-danger:hover { background: rgba(232,104,104,0.08); }
+.btn-sm { padding: 5px 12px; font-size: 11px; }
+.btn-xs { padding: 3px 8px; font-size: 11px; }
+
+/* ── FILTER BAR ──────────────────────────── */
+.filter-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: flex-end;
+}
+.filter-group { display: flex; flex-direction: column; gap: 5px; }
+.filter-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; }
+.fctl {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 5px 9px;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 12px;
+  min-width: 130px;
+}
+.fctl:focus { outline: none; border-color: var(--red); }
+.fctl option { background: var(--surface2); }
+.gauge-range { display: flex; align-items: center; gap: 6px; }
+.gauge-num {
+  width: 48px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 5px 6px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  text-align: center;
+}
+.gauge-num:focus { outline: none; border-color: var(--red); }
+.sa-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.sa-fc {
+  display: flex; align-items: center; gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-size: 11px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s;
+}
+.sa-fc.on { border-color: var(--red); background: rgba(232,0,61,0.12); color: var(--red); }
+.sa-fc input { display: none; }
+
+/* ── TOOLBAR ─────────────────────────────── */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.toolbar-left { display: flex; align-items: center; gap: 10px; }
+.combo-count { font-size: 11px; color: var(--text-muted); }
+.view-toggle {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  overflow: hidden;
+}
+.vt-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  padding: 5px 12px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.vt-btn.active { background: var(--surface2); color: var(--text); }
+
+/* ── COMBO CARD ──────────────────────────── */
+.combo-group {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.cg-header {
+  background: var(--surface2);
+  padding: 7px 14px;
+  font-size: 11px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.char-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  padding: 2px 8px;
+  background: rgba(245,183,49,0.1);
+  border: 1px solid var(--gold-dim);
+  border-radius: 3px;
+}
+
+/* ── ROUTE DISPLAY ───────────────────────── */
+.route-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 10px 14px;
+}
+.tree-common {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 8px 14px;
+  border-left: 3px solid var(--border2);
+  margin: 8px 14px 4px;
+  background: rgba(255,255,255,0.015);
+  border-radius: 0 5px 5px 0;
+}
+.tree-branches { padding: 0 14px 8px 14px; display: flex; flex-direction: column; gap: 2px; }
+.tree-branch {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 5px 8px;
+  border-radius: 4px;
+}
+.tree-branch:hover { background: rgba(255,255,255,0.02); }
+.branch-glyph { color: var(--text-muted); font-size: 14px; flex-shrink: 0; width: 14px; font-family: monospace; }
+
+/* ── CHIPS ───────────────────────────────── */
+.chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+.chip-move {
+  background: var(--chip-move-bg);
+  border: 1px solid var(--chip-move-border);
+  color: #e4e4f8;
+  font-weight: 500;
+}
+.chip-cond {
+  background: var(--chip-cond-bg);
+  border: 1px solid var(--chip-cond-border);
+  color: #f5c84a;
+  font-weight: 500;
+}
+.chip-cond::before { content: '◇ '; font-size: 9px; opacity: 0.8; }
+.chip-arr { color: var(--text-muted); font-size: 10px; }
+.delayed-mark {
+  display: inline-block;
+  font-size: 9px;
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold);
+  margin-left: 1px;
+}
+
+/* ── COMBO META ──────────────────────────── */
+.combo-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 6px 14px;
+  border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.18);
+}
+.meta-item { font-size: 11px; color: var(--text-dim); }
+.meta-item b { color: #e8e8fc; font-weight: 700; }
+.meta-sa-tags { display: inline-flex; gap: 3px; }
+.sa-tag {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(232,0,61,0.12);
+  border: 1px solid var(--red-dim);
+  color: var(--red);
+}
+.label-tag {
+  font-size: 10px;
+  padding: 1px 7px;
+  border-radius: 10px;
+  background: rgba(46,160,67,0.15);
+  border: 1px solid rgba(46,160,67,0.5);
+  color: #4ec862;
+  font-weight: 500;
+  margin-right: 3px;
+}
+.gauge-pips { display: inline-flex; gap: 2px; align-items: center; margin-left: 3px; }
+.pip { width: 7px; height: 7px; border-radius: 50%; background: var(--border2); }
+.pip.on { background: var(--gold); box-shadow: 0 0 4px rgba(245,183,49,0.5); }
+.combo-actions { margin-left: auto; display: flex; gap: 4px; }
+.combo-memo {
+  padding: 4px 12px 6px;
+  margin: 0 14px 8px;
+  font-size: 11px;
+  color: #1a1b2a;
+  background: #c2d4e4;
+  border-radius: 4px;
+}
+
+/* ── FORM ────────────────────────────────── */
+.form-wrap { max-width: 1060px; }
+.form-layout { display: flex; gap: 18px; align-items: flex-start; }
+.form-main { flex: 1; min-width: 0; }
+
+/* ── PALETTE ──────────────────────────────── */
+.palette {
+  width: 210px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.palette-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.palette-title {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 8px 12px 6px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.palette-search {
+  background: var(--surface2);
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  padding: 5px 10px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  width: 100%;
+}
+.palette-search:focus { outline: none; border-bottom-color: var(--red); }
+.palette-chips {
+  padding: 6px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.palette-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: grab;
+  user-select: none;
+  transition: all 0.1s;
+  white-space: nowrap;
+}
+.palette-chip:active { cursor: grabbing; }
+.palette-chip.move-p {
+  background: var(--chip-move-bg);
+  border: 1px solid var(--chip-move-border);
+  color: var(--text);
+}
+.palette-chip.move-p:hover { border-color: var(--border2); background: var(--surface3); }
+.palette-chip.sys-p {
+  background: #111220;
+  border: 1px solid #252640;
+  color: var(--text-dim);
+}
+.palette-chip.sys-p:hover { border-color: var(--border2); color: var(--text); }
+.palette-chip.dragging { opacity: 0.4; }
+
+/* ── DROP ZONES ───────────────────────────── */
+.ins-btn.drag-over {
+  background: rgba(232,0,61,0.15);
+  border-color: var(--red);
+  color: var(--red);
+  width: 28px;
+}
+.rb-chip.drag-over-chip { outline: 2px solid var(--red); outline-offset: 2px; }
+.rb-items.drag-over-end {
+  border-color: var(--red);
+  background: rgba(232,0,61,0.04);
+}
+.form-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+.form-section-title {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.form-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+.form-field { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 150px; }
+.form-label { font-size: 11px; color: var(--text-muted); }
+.form-ctrl {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 7px 11px;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 12px;
+  width: 100%;
+}
+.form-ctrl:focus { outline: none; border-color: var(--red); }
+.form-ctrl option { background: var(--surface2); }
+textarea.form-ctrl { background: #e8e8f0; color: #1a1b2a; }
+textarea.form-ctrl:focus { border-color: var(--red); }
+
+/* ── GATGE SELECTOR ──────────────────────── */
+.gauge-sel { display: flex; gap: 5px; }
+.gauge-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  transition: all 0.15s;
+}
+.gauge-btn:hover { border-color: var(--gold); color: var(--gold); }
+.gauge-btn.on { border-color: var(--gold); background: rgba(245,183,49,0.15); color: var(--gold); }
+
+/* ── SA SELECTOR ─────────────────────────── */
+.sa-sel { display: flex; gap: 6px; flex-wrap: wrap; }
+.sa-sel-btn {
+  padding: 5px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.15s;
+}
+.sa-sel-btn:hover { border-color: var(--red-dim); color: var(--text); }
+.sa-sel-btn.on { border-color: var(--red); background: rgba(232,0,61,0.12); color: var(--red); }
+
+/* ── ROUTE BUILDER ───────────────────────── */
+.rb-items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px;
+  min-height: 50px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+.rb-empty { color: var(--text-muted); font-size: 12px; }
+.rb-chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px 6px 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  position: relative;
+}
+.rb-chip.move-c { background: var(--chip-move-bg); border: 1px solid var(--chip-move-border); color: var(--text); }
+.rb-chip.cond-c { background: var(--chip-cond-bg); border: 1px solid var(--chip-cond-border); color: var(--gold); }
+.rb-chip.cond-c::before { content: '◇ '; font-size: 9px; opacity: 0.7; }
+.rb-arr { color: var(--text-muted); font-size: 10px; margin: 0 1px; }
+.chip-x {
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 1px;
+  margin-left: 1px;
+}
+.chip-x:hover { color: #e86868; }
+.chip-delay {
+  font-size: 9px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 1px 3px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 0.1s;
+  user-select: none;
+}
+.chip-delay.on { color: var(--gold); border-color: var(--gold-dim); }
+.chip-assist {
+  font-size: 9px; color: var(--text-muted); cursor: pointer;
+  padding: 1px 3px; border: 1px solid transparent; border-radius: 2px;
+  transition: all 0.1s; user-select: none;
+}
+.chip-assist.on { color: var(--blue); border-color: rgba(74,158,255,0.4); }
+.assist-mark {
+  display: inline-block; font-size: 9px; color: var(--blue);
+  border-bottom: 1px solid var(--blue); margin-left: 1px;
+}
+.chip-move-btns { display: flex; flex-direction: column; gap: 0; margin-left: 1px; }
+.chip-move-btn {
+  background: none; border: none; color: var(--text-muted);
+  font-size: 8px; line-height: 1; cursor: pointer; padding: 0 1px;
+}
+.chip-move-btn:hover { color: var(--text); }
+
+/* insert button */
+.ins-btn {
+  background: none;
+  border: 1px dashed var(--border2);
+  color: var(--text-muted);
+  width: 18px; height: 22px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.ins-btn:hover { border-color: var(--red); color: var(--red); }
+
+.rb-add-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.rb-add-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text-dim);
+  padding: 5px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.15s;
+}
+.rb-add-btn:hover { border-color: var(--border2); color: var(--text); background: var(--surface3); }
+
+/* ── ATTOCOMPLETE ────────────────────────── */
+.ac-box {
+  background: var(--surface);
+  border: 1px solid var(--red-dim);
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ac-input {
+  background: var(--surface2);
+  border: 1px solid var(--red);
+  color: var(--text);
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 12px;
+  width: 200px;
+}
+.ac-input:focus { outline: none; }
+.ac-dropdown {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 5px;
+  min-width: 210px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+}
+.ac-opt {
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: background 0.1s;
+}
+.ac-opt:hover { background: var(--surface2); }
+.ac-opt.create { color: var(--green); }
+.ac-opt.cond-opt { color: var(--gold); }
+.ac-type {
+  font-size: 9px;
+  color: var(--text-muted);
+  background: var(--border);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+.ac-close {
+  background: none; border: none; color: var(--text-muted);
+  font-size: 16px; cursor: pointer; padding: 2px 6px;
+  border-radius: 3px; align-self: center;
+}
+.ac-close:hover { color: var(--text); }
+
+/* ── MASTER VIEW ─────────────────────────── */
+.master-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  max-width: 700px;
+}
+.master-title {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.char-list { display: flex; flex-direction: column; gap: 4px; max-height: 300px; overflow-y: auto; }
+.char-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 12px;
+}
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.tag-pill {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px 8px;
+  background: var(--chip-move-bg);
+  border: 1px solid var(--chip-move-border);
+  border-radius: 4px;
+  font-size: 11px;
+}
+.tag-del { cursor: pointer; color: var(--text-muted); font-size: 13px; }
+.tag-del:hover { color: #e86868; }
+.add-row { display: flex; gap: 8px; margin-top: 12px; }
+.add-inp {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 6px 11px;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 12px;
+  flex: 1;
+}
+.add-inp:focus { outline: none; border-color: var(--green); }
+
+/* ── EMPTY STATE ─────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+.empty-state h3 { font-size: 16px; margin-bottom: 8px; color: var(--text-dim); }
+
+/* ── TOAST ───────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 22px; right: 22px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--green);
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 12px;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.25s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.err { border-left-color: var(--red); }
+
+/* ── SCROLLBAR ───────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ── DATA BAR ────────────────────────────── */
+.data-bar {
+  display: flex; gap: 8px;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+
+/* ── MISC ────────────────────────────────── */
+.sep { height: 1px; background: var(--border); margin: 10px 0; }
+.page-title { font-size: 17px; font-weight: 700; margin-bottom: 18px; }
+.breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+
+/* ── HELP BTN ────────────────────────────── */
+.help-btn {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--text-muted);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.help-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── MODAL ───────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(3px);
+}
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-top: 3px solid var(--red);
+  border-radius: 10px;
+  width: 100%; max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+}
+.modal-header {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--red);
+}
+.modal-close {
+  background: none; border: none;
+  color: var(--text-muted); font-size: 20px;
+  cursor: pointer; padding: 2px 6px; border-radius: 4px;
+}
+.modal-close:hover { color: var(--text); background: var(--surface2); }
+.modal-body { padding: 20px 22px 24px; }
+.help-section { margin-bottom: 20px; }
+.help-section:last-child { margin-bottom: 0; }
+.help-section-title {
+  font-size: 11px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.help-steps { display: flex; flex-direction: column; gap: 8px; }
+.help-step {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 12px; line-height: 1.6;
+}
+.help-step-num {
+  width: 20px; height: 20px;
+  background: var(--red);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.help-warn {
+  background: rgba(232,0,61,0.08);
+  border: 1px solid var(--red-dim);
+  border-left: 3px solid var(--red);
+  border-radius: 5px;
+  padding: 10px 14px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+.help-warn b { color: #ff6b8a; }
+.help-tip {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 5px;
+  padding: 10px 14px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+.help-tip b { color: var(--text); }
+.chip-sample {
+  display: inline-flex; align-items: center;
+  padding: 2px 7px; border-radius: 4px;
+  font-size: 11px; font-weight: 500; vertical-align: middle;
+}
+.chip-sample.move { background: var(--chip-move-bg); border: 1px solid var(--chip-move-border); color: var(--text); }
+.chip-sample.cond { background: var(--chip-cond-bg); border: 1px solid var(--chip-cond-border); color: var(--gold); }
+
+/* ── PALETTE LABEL CHIP ──────────────────── */
+.palette-chip.label-p {
+  background: rgba(46,160,67,0.1);
+  border: 1px solid rgba(46,160,67,0.3);
+  color: var(--green);
+  cursor: pointer;
+}
+.palette-chip.label-p:hover { background: rgba(46,160,67,0.2); }
+.palette-chip.label-p.label-on {
+  background: rgba(46,160,67,0.3);
+  border-color: var(--green);
+  font-weight: 600;
+}
+
+/* ── キャラ削除インライン確認 ────────────── */
+.char-del-confirm {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px;
+}
+
+/* ── 固有技ソート UI ─────────────────────── */
+.tag-sort-group { margin-bottom: 10px; }
+.tag-sort-group-label {
+  font-size: 10px; color: var(--text-muted);
+  padding: 2px 0 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+.tag-sort-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+  background: var(--surface2);
+  border-radius: 4px;
+  margin-bottom: 3px;
+  break-inside: avoid;
+}
+.tag-sort-name { font-size: 12px; color: var(--text); flex: 1; cursor: pointer; }
+.tag-sort-name:hover { text-decoration: underline dotted var(--text-muted); }
+.tag-editable { cursor: pointer; }
+.tag-editable:hover { text-decoration: underline dotted currentColor; }
+.tag-rename-inp {
+  font-family: var(--font-body);
+  font-size: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--red);
+  color: var(--text);
+  border-radius: 3px;
+  padding: 1px 6px;
+  outline: none;
+  width: 140px;
+}
+.tag-sort-btns { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+
+/* ── MASTER TAG D&D ──────────────────────── */
+.tag-sort-row { cursor: default; }
+.tag-sort-handle {
+  color: var(--text-muted);
+  cursor: grab;
+  padding: 0 6px 0 0;
+  font-size: 14px;
+  flex-shrink: 0;
+  user-select: none;
+}
+.tag-sort-row.dnd-dragging { opacity: 0.35; }
+.tag-sort-row.dnd-over { outline: 2px solid var(--red); outline-offset: -2px; }
+
+/* ── LABEL CHIP ON/OFF ───────────────────── */
+.palette-chip.label-p.label-on {
+  background: var(--green);
+  border-color: var(--green);
+  color: #0c0d14;
+  font-weight: 700;
+}
+
+/* ── RESPONSIVE ──────────────────────────── */
+@media (max-width: 768px) {
+  main { padding: 14px 12px 60px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">SF6 <span>COMBO NOTE</span> DB</div>
+  <nav>
+    <button class="nav-btn active" data-nav="list">コンボ一覧</button>
+    <button class="nav-btn" data-nav="new">新規登録</button>
+    <button class="nav-btn" data-nav="master">マスタ管理</button>
+  </nav>
+  <button class="help-btn" onclick="openHelp()" title="使い方">?</button>
+</header>
+<main id="app"></main>
+<div class="toast" id="toast"></div>
+
+<!-- HELP MODAL -->
+<div class="modal-overlay" id="helpModal" style="display:none" onclick="if(event.target===this)closeHelp()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">使い方ガイド</div>
+      <button class="modal-close" onclick="closeHelp()">&#x2715;</button>
+    </div>
+    <div class="modal-body">
+      <div class="help-section">
+        <div class="help-section-title">はじめに</div>
+        <div class="help-steps">
+          <div class="help-step">
+            <div class="help-step-num">1</div>
+            <div><b>マスタ管理</b>でキャラクターを確認。初回起動時にSF6の現行キャラが自動登録される。DLCなど未登録のキャラは「マスタ管理 → キャラクター」から追加できる。</div>
+          </div>
+          <div class="help-step">
+            <div class="help-step-num">2</div>
+            <div><b>新規登録</b>でキャラクターを選択し、右のパレットまたは「＋」ボタンからコンボルートを組み立てる。技名を入力して選択 or 新規登録できる。</div>
+          </div>
+          <div class="help-step">
+            <div class="help-step-num">3</div>
+            <div>ルート内の各チップは <b>▲▼で並び替え</b>・<b>「遅」で遅らせ入力</b>・<b>×で削除</b>が可能。チップ間の「＋」から任意の位置に挿入もできる。</div>
+          </div>
+          <div class="help-step">
+            <div class="help-step-num">4</div>
+            <div>条件テキスト（例：<span class="chip-sample cond">◇ ヒット確認</span>）はサジェストの「◇ 条件テキストを追加」から入力できる。</div>
+          </div>
+          <div class="help-step">
+            <div class="help-step-num">5</div>
+            <div>コンボ一覧の <b>「複製」</b> ボタンで、似たコンボをコピーして差分だけ編集できる。</div>
+          </div>
+        </div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">表示モード</div>
+        <div class="help-tip">
+          一覧右上の <b>ツリー / リスト</b> で切り替え可能。<br>
+          <b>ツリーモード：</b>始動が同じコンボを自動グルーピングし、共通部分をまとめて分岐を ├ └ で表示。<br>
+          <b>リストモード：</b>1コンボ1行でシンプル表示。
+        </div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">モダン操作</div>
+        <div class="help-tip">
+          パレット下部の <b>⚡ モダン操作 ON/OFF</b> で切り替え。<br>
+          <b>ON：</b>通常技パレットがモダン仕様（方向＋L/M/H）に切り替わり、SP入力も表示される。<br>
+          <b>OFF：</b>クラシック仕様（方向＋L/M/H × P/K）の通常技パレットを表示。<br>
+          <b>AT（オートボタン）</b> はルート内の各チップにトグルできる修飾フラグ。設定はブラウザに記憶される。
+        </div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">コンボの共有</div>
+        <div class="help-tip">
+          <b>個別エクスポート：</b>コンボカード右の <b>⬆</b> ボタンで、そのコンボ1件をJSONに書き出し。<br>
+          <b>フィルタ一括エクスポート：</b>キャラやラベルで絞り込んだ状態でツールバーの <b>⬆ 出力</b> を押すと表示中の全件を書き出し。<br>
+          <b>取り込み：</b>ツールバーの <b>↓ 取り込む</b> から読み込み。タグは名前で照合し、既存と重複しない場合のみ新規作成される。
+        </div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">⚠ データについて（重要）</div>
+        <div class="help-warn">
+          コンボデータは<b>このブラウザのみ</b>に保存されています（IndexedDB）。<br><br>
+          以下の操作でデータがすべて消えます：<br>
+          ・ブラウザの「サイトデータを削除」「Cookieとサイトデータをクリア」<br>
+          ・別のブラウザやPCからアクセス（データは共有されない）<br>
+          ・ブラウウザのプライベートモードで使用<br><br>
+          <b>定期的にマスタ管理 → JSONエクスポートでバックアップを取ってください。</b><br>
+          バックアップがあればJSONインポートでいつでも復元できます。
+        </div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">インポート / エクスポート</div>
+        <div class="help-tip">
+          <b>JSONエクスポート：</b>マスタ管理 → データ管理から全データを書き出し。定期バックアップに使用。<br>
+          <b>JSONインポート：</b>JSONファイルを読み込んでデータを追加（マージ）。既存データは保持される。<br>
+          <b>コンボを取り込む：</b>他の人からもらったコンボパック（⬆ で書き出したJSON）を取り込む場合はこちら。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   DATABASE
+═══════════════════════════════════════════ */
+class DB {
+  constructor() {
+    this.db = null;
+  }
+  open() {
+    return new Promise((res, rej) => {
+      const req = indexedDB.open('SF6ComboDB', 2);
+      req.onupgradeneeded = e => {
+        const d = e.target.result;
+        if (!d.objectStoreNames.contains('characters'))
+          d.createObjectStore('characters', { keyPath: 'id', autoIncrement: true });
+        if (!d.objectStoreNames.contains('moveTags'))
+          d.createObjectStore('moveTags', { keyPath: 'id' });
+        if (!d.objectStoreNames.contains('combos'))
+          d.createObjectStore('combos', { keyPath: 'id' });
+
+      };
+      req.onsuccess = e => { this.db = e.target.result; res(); };
+      req.onerror = e => rej(e.target.error);
+    });
+  }
+  _os(store, mode = 'readonly') {
+    return this.db.transaction(store, mode).objectStore(store);
+  }
+  getAll(store) {
+    return new Promise((res, rej) => {
+      const req = this._os(store).getAll();
+      req.onsuccess = () => res(req.result || []);
+      req.onerror = () => rej(req.error);
+    });
+  }
+  put(store, data) {
+    return new Promise((res, rej) => {
+      const req = this._os(store, 'readwrite').put(data);
+      req.onsuccess = () => res(req.result);
+      req.onerror = () => rej(req.error);
+    });
+  }
+  del(store, id) {
+    return new Promise((res, rej) => {
+      const req = this._os(store, 'readwrite').delete(id);
+      req.onsuccess = () => res();
+      req.onerror = () => rej(req.error);
+    });
+  }
+  clear(store) {
+    return new Promise((res, rej) => {
+      const req = this._os(store, 'readwrite').clear();
+      req.onsuccess = () => res();
+      req.onerror = () => rej(req.error);
+    });
+  }
+}
+
+/* ═══════════════════════════════════════════
+   SYSTEM TAGS
+═══════════════════════════════════════════ */
+const DIRS   = ['N','↑','↓','←','→','↗','↘','↙','↖'];
+const STR    = ['小','中','大'];
+const TYPES  = ['P','K'];
+const DIR_NUM  = { 'N':'5', '↑':'8', '↓':'2', '←':'4', '→':'6', '↗':'9', '↘':'3', '↙':'1', '↖':'7' };
+const STR_CHAR = { '小':'L', '中':'M', '大':'H' };
+
+const SYS_TAGS = (() => {
+  const t = [];
+  // クラシック通常技: 9方向 × 3強度 × P/K = 54
+  for (const d of DIRS) for (const s of STR) for (const tp of TYPES) {
+    const id = `${DIR_NUM[d]}${STR_CHAR[s]}${tp}`;
+    t.push({ id, name: id, kind: 'normal', system: true });
+  }
+  // モダン通常技: 9方向 × 3強度 = 27
+  for (const d of DIRS) for (const s of STR) {
+    const id = `${DIR_NUM[d]}${STR_CHAR[s]}`;
+    t.push({ id, name: id, kind: 'modern-normal', system: true });
+  }
+  // モダンSP入力
+  ['5SP','2SP','4SP','6SP','8SP'].forEach(id =>
+    t.push({ id, name: id, kind: 'modern', system: true }));
+  // 共通その他（クラシック・モダン両対応）
+  t.push({ id: 'CR',         name: 'CR',         kind: 'other', system: true });
+  t.push({ id: 'SA1',        name: 'SA1',        kind: 'other', system: true });
+  t.push({ id: 'SA2',        name: 'SA2',        kind: 'other', system: true });
+  t.push({ id: 'SA3',        name: 'SA3',        kind: 'other', system: true });
+  t.push({ id: 'CA',         name: 'CA',         kind: 'other', system: true });
+  t.push({ id: 'DI',         name: 'DI',         kind: 'other', system: true });
+  t.push({ id: '投げ',       name: '投げ',       kind: 'other', system: true });
+  t.push({ id: '前歩き',     name: '前歩き',     kind: 'other', system: true });
+  t.push({ id: '前ステ',     name: '前ステ',     kind: 'other', system: true });
+  t.push({ id: '生ラッシュ', name: '生ラッシュ', kind: 'other', system: true });
+  t.push({ id: '前ジャンプ', name: '前ジャンプ', kind: 'other', system: true });
+  return t;
+})();
+
+function tagDisplayName(tag, rawId) { return tag ? tag.name : (rawId != null ? `[不明:${rawId}]` : '?'); }
+
+const KIND_LABEL = { normal: 'クラシック通常技', 'modern-normal': 'モダン通常技', modern: 'モダンSP', other: 'その他', custom: '特殊技', condition: '条件', label: 'ラベル' };
+
+function findTag(id, customTags) {
+  const sys = SYS_TAGS.find(t => t.id === id);
+  if (sys) return sys;
+  return customTags.find(t => t.id === id || String(t.id) === String(id)) || null;
+}
+function allTags(customTags) { return [...SYS_TAGS, ...customTags]; }
+function condTags()  { return S.tags.filter(t => t.kind === 'condition'); }
+function labelTags() { return S.tags.filter(t => t.kind === 'label'); }
+function movOnlyTags() { return S.tags.filter(t => t.kind !== 'condition' && t.kind !== 'label'); }
+
+/* ═══════════════════════════════════════════
+   APP STATE
+═══════════════════════════════════════════ */
+const db = new DB();
+
+const S = {
+  view: 'list',
+  chars: [],
+  tags: [],
+  combos: [],
+  filters: { charId: '', starterKey: '', dgMin: 0, dgMax: 6, sa: [], labels: [], moveTags: [] },
+  groupMode: true,
+  editId: null,
+  form: null,
+  ac: { open: false, insertAfter: -1, query: '' },
+  modernMode: localStorage.getItem('sf6_modern') === '1',
+};
+
+// キャラクターマスタ（固定ID）— DLC追加時はここに追記してバージョンアップ
+const CHAR_MASTER = [
+  { id:  1, name: 'リュウ' },
+  { id:  2, name: 'ルーク' },
+  { id:  3, name: 'ジェイミー' },
+  { id:  4, name: '春麗' },
+  { id:  5, name: 'ガイル' },
+  { id:  6, name: 'キンバリー' },
+  { id:  7, name: 'ジュリ' },
+  { id:  8, name: 'ケン' },
+  { id:  9, name: 'ブランカ' },
+  { id: 10, name: 'ダルシム' },
+  { id: 11, name: 'エドモンド本田' },
+  { id: 12, name: 'ザンギエフ' },
+  { id: 13, name: 'ディージェイ' },
+  { id: 14, name: 'マノン' },
+  { id: 15, name: 'マリーザ' },
+  { id: 16, name: 'JP' },
+  { id: 17, name: 'リリー' },
+  { id: 18, name: 'キャミィ' },
+  { id: 19, name: 'ラシード' },
+  { id: 20, name: 'A.K.I.' },
+  { id: 21, name: 'エド' },
+  { id: 22, name: '豪鬼' },
+  { id: 23, name: 'ベガ' },
+  { id: 24, name: 'テリー' },
+  { id: 25, name: '舞' },
+  { id: 26, name: 'エレナ' },
+  { id: 27, name: 'サガット' },
+  { id: 28, name: 'C.ヴァイパー' },
+  { id: 29, name: 'アレックス' },
+];
+
+async function loadAll() {
+  [S.chars, S.tags, S.combos] = await Promise.all([
+    db.getAll('characters'),
+    db.getAll('moveTags'),
+    db.getAll('combos'),
+  ]);
+}
+
+// 起動時：CHAR_MASTERにあってDBにないIDだけ追加（DLC対応・既存データ保持）
+async function seedMissingChars() {
+  const chars = await db.getAll('characters');
+  const existIds = new Set(chars.map(c => c.id));
+  for (const c of CHAR_MASTER) {
+    if (!existIds.has(c.id)) await db.put('characters', c);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   ROUTING
+═══════════════════════════════════════════ */
+function nav(view, opts = {}) {
+  S.view = view;
+  Object.assign(S, opts);
+  document.querySelectorAll('[data-nav]').forEach(b => {
+    b.classList.toggle('active', b.dataset.nav === view ||
+      (view === 'edit' && b.dataset.nav === 'new'));
+  });
+  render();
+}
+
+function render() {
+  const app = document.getElementById('app');
+  if (S.view === 'list')   app.innerHTML = renderList();
+  else if (S.view === 'new' || S.view === 'edit') app.innerHTML = renderForm();
+  else if (S.view === 'master') app.innerHTML = renderMaster();
+  bindAll();
+}
+// マスタ管理専用: render後にスクロール位置を保持する
+function masterRender() {
+  const scrollY = window.scrollY;
+  render();
+  // 二重rAFでDOM再レイアウト完了後にスクロール復元
+  requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, scrollY)));
+}
+
+/* ═══════════════════════════════════════════
+   LIST VIEW
+═══════════════════════════════════════════ */
+function filteredCombos() {
+  let cs = [...S.combos];
+  const { charId, starterKey, dgMin, dgMax, sa } = S.filters;
+  if (charId) cs = cs.filter(c => String(c.charId) === String(charId));
+  if (starterKey) cs = cs.filter(c => getStarterKey(c) === starterKey);
+  if (dgMin > 0 || dgMax < 6) cs = cs.filter(c => (c.dg || 0) >= dgMin && (c.dg || 0) <= dgMax);
+  if (sa.length) cs = cs.filter(c => sa.every(s => (c.sa || []).includes(s)));
+  if (S.filters.labels?.length) cs = cs.filter(c => S.filters.labels.every(lid => (c.labels || []).includes(lid)));
+  if (S.filters.moveTags?.length) cs = cs.filter(c =>
+    S.filters.moveTags.every(tid => (c.route || []).some(r => r.type === 'move' && String(r.tagId) === String(tid)))
+  );
+  return cs;
+}
+
+function getStarterKey(combo) {
+  if (!combo.route || !combo.route.length) return '';
+  const f = combo.route[0];
+  return f.type === 'move' ? `m:${f.tagId}` : `c:${f.text}`;
+}
+function getStarterLabel(combo) {
+  if (!combo.route || !combo.route.length) return '(空)';
+  const f = combo.route[0];
+  if (f.type === 'move') { const t = findTag(f.tagId, S.tags); return t ? tagDisplayName(t) : tagDisplayName(null, f.tagId); }
+  return `◇${f.text}`;
+}
+function uniqueStarters() {
+  const m = new Map();
+  for (const c of S.combos) {
+    const k = getStarterKey(c);
+    if (k && !m.has(k)) m.set(k, getStarterLabel(c));
+  }
+  return [...m.entries()].map(([key, label]) => ({ key, label }));
+}
+
+function itemKey(item) {
+  if (!item) return '';
+  return item.type === 'move' ? `m:${item.tagId}:${item.delayed ? 1 : 0}` : `c:${item.text}`;
+}
+function lcp(combos) {
+  if (!combos.length) return 0;
+  const min = Math.min(...combos.map(c => (c.route || []).length));
+  for (let i = 0; i < min; i++) {
+    const k = itemKey(combos[0].route[i]);
+    if (combos.some(c => itemKey(c.route[i]) !== k)) return i;
+  }
+  return min;
+}
+function groupCombos(combos) {
+  const groups = [], used = new Set();
+  for (let i = 0; i < combos.length; i++) {
+    if (used.has(i)) continue;
+    const grp = [i];
+    for (let j = i + 1; j < combos.length; j++) {
+      if (used.has(j)) continue;
+      const plen = lcp([combos[i], combos[j]]);
+      if (plen >= 1) { grp.push(j); used.add(j); }
+    }
+    used.add(i);
+    const gc = grp.map(idx => combos[idx]);
+    const pl = lcp(gc);
+    groups.push({ common: pl > 0 ? gc[0].route.slice(0, pl) : [], branches: gc.map(c => ({ combo: c, tail: c.route.slice(pl) })), single: gc.length === 1 });
+  }
+  return groups;
+}
+
+function renderChips(items) {
+  if (!items || !items.length) return '<span style="color:var(--text-muted);font-size:11px">(空)</span>';
+  return items.map((item, i) => {
+    const arr = i > 0 ? '<span class="chip-arr">→</span>' : '';
+    if (item.type === 'move') {
+      const t = findTag(item.tagId, S.tags);
+      const name = t ? tagDisplayName(t) : tagDisplayName(null, item.tagId);
+      return `${arr}<span class="chip chip-move">${name}${item.delayed ? '<span class="delayed-mark">遅</span>' : ''}${item.assist ? '<span class="assist-mark">AT</span>' : ''}</span>`;
+    }
+    return `${arr}<span class="chip chip-cond">${item.text || ''}</span>`;
+  }).join('');
+}
+
+function renderPips(n) {
+  let h = '<span class="gauge-pips">';
+  for (let i = 1; i <= 6; i++) h += `<span class="pip${i <= n ? ' on' : ''}"></span>`;
+  return h + '</span>';
+}
+
+function renderMeta(combo) {
+  const parts = [];
+  if (combo.damage) parts.push(`<span class="meta-item">ダメージ <b>${combo.damage}</b></span>`);
+  if (combo.dg) parts.push(`<span class="meta-item">DG ${renderPips(combo.dg)} <b>${combo.dg}</b></span>`);
+  if (combo.sa && combo.sa.length) {
+    parts.push(`<span class="meta-item"><span class="meta-sa-tags">${combo.sa.map(s => `<span class="sa-tag">${s}</span>`).join('')}</span></span>`);
+  }
+  // ラベルタグ
+  if (combo.labels && combo.labels.length) {
+    const labelHtml = combo.labels.map(lid => {
+      const t = S.tags.find(t => String(t.id) === String(lid));
+      return t ? `<span class="label-tag">${escHtml(t.name)}</span>` : '';
+    }).filter(Boolean).join('');
+    if (labelHtml) parts.push(`<span class="meta-item">${labelHtml}</span>`);
+  }
+  return `<div class="combo-meta">
+    ${parts.join('')}
+    <div class="combo-actions">
+      <button class="btn btn-ghost btn-xs" onclick="copyCombo('${combo.id}')">複製</button>
+      <button class="btn btn-ghost btn-xs" onclick="editCombo('${combo.id}')">編集</button>
+      <button class="btn btn-danger btn-xs" onclick="delCombo('${combo.id}')">削除</button>
+      <button class="btn btn-ghost btn-xs" onclick="exportSingleCombo('${combo.id}')" title="このコンボをエクスポート">⬆</button>
+    </div>
+  </div>${combo.memo ? `<div class="combo-memo">${escHtml(combo.memo)}</div>` : ''}`;
+}
+
+function renderList() {
+  const fc = filteredCombos();
+  const starters = uniqueStarters();
+  const { filters } = S;
+
+  let html = `<div class="data-bar">
+    <button class="btn btn-secondary btn-sm" onclick="exportJSON()">エクスポート</button>
+    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('impFile').click()">インポート</button>
+    <input type="file" id="impFile" accept=".json" style="display:none" onchange="importJSON(this)">
+  </div>
+  <div class="filter-bar">
+    <div class="filter-group">
+      <div class="filter-label">キャラクター</div>
+      <select class="fctl" id="f-char" onchange="applyFilter('charId',this.value)">
+        <option value="">全キャラ</option>
+        ${S.chars.map(c => `<option value="${c.id}" ${String(filters.charId) === String(c.id) ? 'selected' : ''}>${c.name}</option>`).join('')}
+      </select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">始動 / 最初の条件</div>
+      <select class="fctl" id="f-starter" onchange="applyFilter('starterKey',this.value)">
+        <option value="">すべて</option>
+        ${starters.map(s => `<option value="${s.key}" ${filters.starterKey === s.key ? 'selected' : ''}>${s.label}</option>`).join('')}
+      </select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">ドライブゲージ</div>
+      <div class="gauge-range">
+        <input type="number" class="gauge-num" id="f-dgmin" min="0" max="6" value="${filters.dgMin}" onchange="applyFilter('dgMin',+this.value)">
+        <span style="color:var(--text-muted)">〜</span>
+        <input type="number" class="gauge-num" id="f-dgmax" min="0" max="6" value="${filters.dgMax}" onchange="applyFilter('dgMax',+this.value)">
+      </div>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">SA / CA</div>
+      <div class="sa-filters">
+        ${['SA1','SA2','SA3','CA'].map(s => `
+          <label class="sa-fc ${filters.sa.includes(s) ? 'on' : ''}" id="safc-${s}">
+            <input type="checkbox" value="${s}" ${filters.sa.includes(s) ? 'checked' : ''} onchange="toggleSaFilter('${s}',this.checked)">
+            ${s}
+          </label>`).join('')}
+      </div>
+    </div>
+    <div class="filter-group" style="min-width:200px;max-width:280px">
+      <div class="filter-label">含まれる技</div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <select class="fctl" onchange="addMoveTagFilter(this.value);this.value=''">
+          <option value="">＋ 技を追加...</option>
+          ${(() => {
+            const used = new Set(S.filters.moveTags.map(String));
+            const all = allTags(S.tags).filter(t => !used.has(String(t.id)));
+            const charId = filters.charId ? String(filters.charId) : null;
+            // キャラが選択されている場合はそのキャラの固有技のみ、そうでなければ全固有技
+            const customTags = charId
+              ? all.filter(t => t.kind === 'custom' && String(t.charId) === charId)
+              : all.filter(t => t.kind === 'custom');
+            const sysTags = all.filter(t => t.system);
+            const groups = [
+              { label: charId ? `${S.chars.find(c=>String(c.id)===charId)?.name || 'キャラ'}固有技` : 'キャラ固有技', items: customTags },
+              { label: '通常技 / システム', items: sysTags },
+            ];
+            return groups.map(g => g.items.length
+              ? `<optgroup label="${g.label}">${g.items.map(t => `<option value="${escHtml(String(t.id))}">${escHtml(tagDisplayName(t))}</option>`).join('')}</optgroup>`
+              : ''
+            ).join('') || '<option disabled>（技がありません）</option>';
+          })()}
+        </select>
+        <div style="display:flex;flex-wrap:wrap;gap:3px">
+          ${S.filters.moveTags.map(tid => {
+            const tag = allTags(S.tags).find(t => String(t.id) === String(tid));
+            const safe = String(tid).replace(/'/g, "\\'");
+            return tag ? `<span class="sa-fc on" style="gap:4px">
+              ${escHtml(tagDisplayName(tag))}
+              <span style="cursor:pointer;font-size:12px;line-height:1" onclick="removeMoveTagFilter('${safe}')">×</span>
+            </span>` : '';
+          }).filter(Boolean).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">ラベル</div>
+      <div class="sa-filters">
+        ${labelTags().map(t => {
+          const safe = String(t.id).replace(/'/g, "\\'");
+          const on = S.filters.labels.includes(t.id);
+          return `<label class="sa-fc ${on ? 'on' : ''}" id="lfc-${safe}">
+            <input type="checkbox" value="${safe}" ${on ? 'checked' : ''} onchange="toggleLabelFilter('${safe}',this.checked)">
+            ${escHtml(t.name)}
+          </label>`;
+        }).join('')}
+        ${labelTags().length === 0 ? '<span style="color:var(--text-muted);font-size:11px">マスタ管理でラベルを登録</span>' : ''}
+      </div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="resetFilters()">リセット</button>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <span class="combo-count">${fc.length} 件</span>
+      <div class="view-toggle">
+        <button class="vt-btn ${S.groupMode ? 'active' : ''}" onclick="S.groupMode=true;render()">ツリー</button>
+        <button class="vt-btn ${!S.groupMode ? 'active' : ''}" onclick="S.groupMode=false;render()">リスト</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <button class="btn btn-secondary btn-sm" onclick="exportFilteredCombos()" title="表示中のコンボをエクスポート">⬆ 出力</button>
+      <button class="btn btn-secondary btn-sm" onclick="document.getElementById('comboPackInpList').click()">↓ 取り込む</button>
+      <input type="file" id="comboPackInpList" accept=".json" style="display:none" onchange="importComboPackFile(this)">
+      <button class="btn btn-primary btn-sm" onclick="initForm(null);nav('new')">＋ 新規登録</button>
+    </div>
+  </div>`;
+
+  if (!fc.length) {
+    html += `<div class="empty-state"><h3>コンボが見つかりません</h3><p>フィルターを変更するか、新規登録してください。</p></div>`;
+    return html;
+  }
+
+  if (!S.groupMode) {
+    for (const combo of fc) {
+      const ch = S.chars.find(c => c.id === combo.charId);
+      html += `<div class="combo-group">
+        <div class="cg-header"><span class="char-badge">${ch ? ch.name : '？'}</span></div>
+        <div class="route-row">${renderChips(combo.route)}</div>
+        ${renderMeta(combo)}
+      </div>`;
+    }
+    return html;
+  }
+
+  // Tree mode – group by char, then by prefix
+  const byChar = new Map();
+  for (const c of fc) {
+    if (!byChar.has(c.charId)) byChar.set(c.charId, []);
+    byChar.get(c.charId).push(c);
+  }
+  for (const [cid, charCombos] of byChar) {
+    const ch = S.chars.find(c => c.id === cid);
+    html += `<div class="combo-group">
+      <div class="cg-header"><span class="char-badge">${ch ? ch.name : '？'}</span><span style="color:var(--text-muted)">${charCombos.length}件</span></div>`;
+
+    const groups = groupCombos(charCombos);
+    for (const g of groups) {
+      if (g.single || !g.common.length) {
+        const { combo } = g.branches[0];
+        html += `<div class="route-row">${renderChips(combo.route)}</div>${renderMeta(combo)}`;
+      } else {
+        html += `<div class="tree-common">${renderChips(g.common)}</div>
+          <div class="tree-branches">`;
+        g.branches.forEach(({ combo, tail }, bi) => {
+          const gl = bi === g.branches.length - 1 ? '└' : '├';
+          html += `<div class="tree-branch">
+            <span class="branch-glyph">${gl}</span>
+            ${renderChips(tail)}
+          </div>
+          <div style="padding:0 14px 2px 28px">${renderMeta(combo)}</div>`;
+        });
+        html += `</div>`;
+      }
+    }
+    html += `</div>`;
+  }
+  return html;
+}
+
+/* filter helpers */
+function applyFilter(key, val) { S.filters[key] = val; render(); }
+function toggleSaFilter(s, on) {
+  S.filters.sa = on ? [...new Set([...S.filters.sa, s])] : S.filters.sa.filter(x => x !== s);
+  render();
+}
+function toggleLabelFilter(id, on) {
+  S.filters.labels = on ? [...new Set([...S.filters.labels, id])] : S.filters.labels.filter(x => x !== id);
+  render();
+}
+
+// ── 含まれる技フィルタ ─────────────────────────────
+function addMoveTagFilter(tid) {
+  if (!tid) return;
+  if (!S.filters.moveTags.some(x => String(x) === String(tid))) {
+    S.filters.moveTags = [...S.filters.moveTags, tid];
+  }
+  render();
+}
+function removeMoveTagFilter(tid) {
+  S.filters.moveTags = S.filters.moveTags.filter(x => String(x) !== String(tid));
+  render();
+}
+function resetFilters() { S.filters = { charId:'', starterKey:'', dgMin:0, dgMax:6, sa:[], labels:[], moveTags:[] }; render(); }
+
+/* combo actions */
+async function editCombo(id) {
+  const combo = S.combos.find(c => String(c.id) === String(id));
+  if (!combo) return;
+  S.editId = id;
+  initForm(combo);
+  nav('edit');
+}
+async function delCombo(id) {
+  if (!confirm('このコンボを削除しますか？')) return;
+  // UUIDは文字列、数値IDはそのまま渡す
+  const combo = S.combos.find(c => String(c.id) === String(id));
+  if (!combo) return;
+  await db.del('combos', combo.id);
+  await loadAll();
+  render();
+  toast('削除しました');
+}
+function copyCombo(id) {
+  const combo = S.combos.find(c => String(c.id) === String(id));
+  if (!combo) return;
+  S.editId = null;
+  initForm(JSON.parse(JSON.stringify({ ...combo, id: undefined })));
+  nav('new');
+  toast('複製しました。編集して保存してください。');
+}
+
+/* ═══════════════════════════════════════════
+   FORM VIEW
+═══════════════════════════════════════════ */
+function initForm(combo) {
+  if (combo) {
+    S.form = {
+      charId: combo.charId ?? '',
+      route: JSON.parse(JSON.stringify(combo.route || [])),
+      dg: combo.dg || 0,
+      sa: combo.sa ? [...combo.sa] : [],
+      labels: combo.labels ? [...combo.labels] : [],
+      damage: combo.damage || '',
+      memo: combo.memo || '',
+    };
+  } else {
+    S.form = { charId: '', route: [], dg: 0, sa: [], labels: [], damage: '', memo: '' };
+  }
+  S.ac = { open: false, insertAfter: -1, query: '' };
+  palNormalQ = '';
+  palCustomQ = '';
+  palCondQ = '';
+}
+
+function uid() {
+  // UUID v4
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+function renderForm() {
+  const isEdit = S.view === 'edit';
+  const f = S.form;
+  return `
+  <div class="form-wrap">
+    <div class="breadcrumb">
+      <button class="btn btn-ghost btn-sm" onclick="nav('list')">← 一覧へ</button>
+      <span style="color:var(--text-muted);font-size:12px">/</span>
+      <span style="font-size:14px;font-weight:600">${isEdit ? 'コンボ編集' : '新規コンボ登録'}</span>
+    </div>
+
+    <div class="form-layout">
+    <div class="form-main">
+    <div class="form-section">
+      <div class="form-section-title">基本情報</div>
+      <div class="form-row">
+        <div class="form-field">
+          <div class="form-label">キャラクター</div>
+          <select class="form-ctrl" id="fc-char" onchange="onCharChange(this.value)">
+            <option value="">選択してください</option>
+            ${S.chars.map(c => `<option value="${c.id}" ${String(f.charId) === String(c.id) ? 'selected' : ''}>${c.name}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-field">
+          <div class="form-label">ダメージ</div>
+          <input type="number" class="form-ctrl" id="fc-dmg" value="${f.damage}" placeholder="例: 3560" oninput="S.form.damage=+this.value||''">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">コンボルート</div>
+      <div id="rb">${renderRB()}</div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">ゲージ / SA</div>
+      <div class="form-row">
+        <div class="form-field">
+          <div class="form-label">ドライブゲージ消費</div>
+          <div class="gauge-sel">
+            ${[0,1,2,3,4,5,6].map(n => `<button class="gauge-btn ${f.dg === n ? 'on' : ''}" onclick="setGauge(${n})">${n}</button>`).join('')}
+          </div>
+        </div>
+        <div class="form-field">
+          <div class="form-label">SA / CA 使用</div>
+          <div class="sa-sel">
+            ${['SA1','SA2','SA3','CA'].map(s => `<button class="sa-sel-btn ${f.sa.includes(s) ? 'on' : ''}" onclick="toggleSa('${s}')">${s}</button>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">メモ</div>
+      <textarea class="form-ctrl" id="fc-memo" rows="3" placeholder="補足情報など" oninput="S.form.memo=this.value">${escHtml(f.memo)}</textarea>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="saveCombo()">保存</button>
+      <button class="btn btn-secondary" onclick="nav('list')">キャンセル</button>
+    </div>
+    </div><!-- /form-main -->
+    <div class="palette" id="palette">${renderPalette()}</div>
+    </div><!-- /form-layout -->
+  </div>`;
+}
+
+function renderRB() {
+  const route = S.form.route;
+  let html = `<div class="rb-items" id="rb-items"
+    ondragover="rbAreaDragover(event)"
+    ondrop="rbAreaDrop(event)"
+    ondragleave="rbAreaDragleave(event)">`;
+  if (!route.length) html += `<span class="rb-empty">パレットから技をドラッグ、または下のボタンで追加</span>`;
+
+  html += insBtn(-1);
+  for (let i = 0; i < route.length; i++) {
+    const item = route[i];
+    const arr = i > 0 ? '<span class="rb-arr">→</span>' : '';
+    if (item.type === 'move') {
+      const t = findTag(item.tagId, S.tags);
+      const name = t ? tagDisplayName(t) : tagDisplayName(null, item.tagId);
+      html += `${arr}<div class="rb-chip move-c" draggable="true"
+        ondragstart="chipDragStart(event,${i})"
+        ondragend="chipDragEnd(event)"
+        ondragover="chipDragOver(event,${i})"
+        ondragleave="chipDragLeave(event)"
+        ondrop="chipDrop(event,${i})">
+        <span class="chip-delay ${item.delayed ? 'on' : ''}" draggable="false" onclick="event.stopPropagation();toggleDelay(${i})" title="遅らせ入力">遅</span>
+        ${S.modernMode ? `<span class="chip-assist ${item.assist ? 'on' : ''}" draggable="false" onclick="event.stopPropagation();toggleAssist(${i})" title="アシスト入力">AT</span>` : ''}
+        ${escHtml(name)}
+        <div class="chip-move-btns" draggable="false">
+          <button class="chip-move-btn" draggable="false" onclick="event.stopPropagation();moveItem(${i},-1)" title="上へ">▲</button>
+          <button class="chip-move-btn" draggable="false" onclick="event.stopPropagation();moveItem(${i},1)" title="下へ">▼</button>
+        </div>
+        <span class="chip-x" draggable="false" onclick="event.stopPropagation();delItem(${i})">×</span>
+      </div>`;
+    } else {
+      html += `${arr}<div class="rb-chip cond-c" draggable="true"
+        ondragstart="chipDragStart(event,${i})"
+        ondragend="chipDragEnd(event)"
+        ondragover="chipDragOver(event,${i})"
+        ondragleave="chipDragLeave(event)"
+        ondrop="chipDrop(event,${i})">
+        <span style="cursor:pointer" draggable="false" onclick="event.stopPropagation();editCond(${i})" title="クリックで編集">${escHtml(item.text || '条件')}</span>
+        <div class="chip-move-btns" draggable="false">
+          <button class="chip-move-btn" draggable="false" onclick="event.stopPropagation();moveItem(${i},-1)">▲</button>
+          <button class="chip-move-btn" draggable="false" onclick="event.stopPropagation();moveItem(${i},1)">▼</button>
+        </div>
+        <span class="chip-x" draggable="false" onclick="event.stopPropagation();delItem(${i})">×</span>
+      </div>`;
+    }
+    html += insBtn(i);
+  }
+  html += `</div>`;
+
+  // Autocomplete box
+  if (S.ac.open) html += renderAC();
+
+  html += `<div class="rb-add-row">
+    <button class="rb-add-btn" onclick="openAC(${S.form.route.length - 1})">＋ 技を追加</button>
+    <button class="rb-add-btn" onclick="acAddCondDirect()">◇ 条件を追加</button>
+  </div>`;
+  return html;
+}
+
+function insBtn(after) {
+  return `<button class="ins-btn" onclick="openAC(${after})" title="ここに挿入"
+    ondragover="insBtnDragover(event,${after})"
+    ondragleave="insBtnDragleave(event)"
+    ondrop="insBtnDrop(event,${after})">＋</button>`;
+}
+
+function renderAC() {
+  const q = S.ac.query.toLowerCase();
+  const all = allTags(S.tags); // 1回だけ呼ぶ
+  const filtered = q ? all.filter(t => t.name.toLowerCase().includes(q)) : all;
+
+  // 4セクション：キャラ固有技 / 通常技・システム / その他 / 条件
+  let charSpecific = [], systemFiltered = [], others = [], condFiltered = [];
+  if (S.form.charId) {
+    charSpecific   = filtered
+      .filter(t => !t.system && t.kind === 'custom' && String(t.charId) === String(S.form.charId))
+      .sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999));
+    systemFiltered = filtered.filter(t => t.system);
+    others         = filtered.filter(t => !t.system && t.kind === 'custom' && t.charId != null && String(t.charId) !== String(S.form.charId));
+  } else {
+    systemFiltered = filtered.filter(t => t.system);
+    others         = filtered.filter(t => !t.system && t.kind === 'custom');
+  }
+  condFiltered = filtered.filter(t => t.kind === 'condition');
+
+  const canCreate = q && !all.some(t => t.name === q.trim());
+
+  // IDをonclickに安全に渡す（数値はそのまま、文字列はJSON.stringify）
+  function tagOnclick(t) {
+    // シングルクォートで囲む（HTML属性のダブルクォートと衝突しないよう）
+    const safe = String(t.id).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    return `acSelect('${safe}')`;
+  }
+  function renderOpts(list, limit) {
+    return list.slice(0, limit).map(t => `<div class="ac-opt" onclick="${tagOnclick(t)}"><span>${escHtml(tagDisplayName(t))}</span><span class="ac-type">${KIND_LABEL[t.kind] || '特殊技'}</span></div>`).join('');
+  }
+  function secHead(label) {
+    return `<div style="padding:3px 12px 2px;font-size:10px;color:var(--text-muted);background:var(--surface2);border-top:1px solid var(--border)">${label}</div>`;
+  }
+
+  let dropdownHTML = '';
+  if (charSpecific.length)   dropdownHTML += secHead('キャラ固有技') + renderOpts(charSpecific, 50);
+  if (systemFiltered.length) dropdownHTML += secHead('通常技 / システム') + renderOpts(systemFiltered, 70);
+  if (others.length)         dropdownHTML += secHead('その他') + renderOpts(others, 10);
+  if (!dropdownHTML && !condFiltered.length) dropdownHTML = `<div class="ac-opt" style="color:var(--text-muted)">該当なし</div>`;
+
+  // 条件タグセクション（種類が違うのでクリックで挿入ではなく条件チップとして追加）
+  function condOnclick(t) {
+    const safe = String(t.id).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    return `acSelectCond('${safe}')`;
+  }
+  const condOptsHTML = condFiltered.length
+    ? secHead('登録済み条件') + condFiltered.map(t =>
+        `<div class="ac-opt cond-opt" onclick="${condOnclick(t)}">◇ ${escHtml(t.name)}</div>`
+      ).join('')
+    : '';
+
+  return `<div class="ac-box">
+    <div>
+      <input class="ac-input" id="ac-inp" placeholder="技名を入力..." value="${escHtml(S.ac.query)}"
+        autocomplete="off" onkeydown="acKeydown(event)">
+    </div>
+    <div class="ac-dropdown">
+      ${dropdownHTML}
+      ${condOptsHTML}
+      ${canCreate ? `<div class="ac-opt create" onclick="acCreate('${escHtml(q.trim())}')">＋ 「${escHtml(q.trim())}」を新規登録して追加</div>` : ''}
+      <div class="ac-opt cond-opt" onclick="acAddCond()">◇ 条件テキストを追加 / 新規登録</div>
+    </div>
+    <button class="ac-close" onclick="S.ac.open=false;rbRefresh()">✕</button>
+  </div>`;
+}
+
+/* ─ route builder globals ─────────────── */
+function rbRefresh() {
+  const el = document.getElementById('rb');
+  if (el) el.innerHTML = renderRB();
+  if (S.ac.open) setTimeout(() => {
+    const inp = document.getElementById('ac-inp');
+    if (!inp) return;
+    inp.focus();
+    inp.setSelectionRange(inp.value.length, inp.value.length);
+    // IME対応：変換中はクエリを更新しない
+    if (inp._imeListenerAdded) return;
+    inp._imeListenerAdded = true;
+    let composing = false;
+    inp.addEventListener('compositionstart', () => { composing = true; });
+    inp.addEventListener('compositionend', () => {
+      composing = false;
+      S.ac.query = inp.value;
+      rbRefresh();
+    });
+    inp.addEventListener('input', () => {
+      if (!composing) {
+        S.ac.query = inp.value;
+        rbRefresh();
+      }
+    });
+  }, 0);
+}
+
+function openAC(after) {
+  S.ac = { open: true, insertAfter: after, query: '' };
+  rbRefresh();
+  setTimeout(() => { const i = document.getElementById('ac-inp'); if (i) i.focus(); }, 0);
+}
+
+function acKeydown(e) {
+  if (e.key === 'Escape') { S.ac.open = false; rbRefresh(); }
+}
+
+function acSelect(tagId) {
+  const at = S.ac.insertAfter + 1;
+  S.form.route.splice(at, 0, { id: uid(), type: 'move', tagId, delayed: false, assist: false });
+  S.ac.open = false;
+  S.ac.query = '';
+  rbRefresh();
+}
+
+async function acCreate(name) {
+  if (!name || !name.trim()) return;
+  const trimmed = name.trim();
+  if (trimmed.length > 255) { toast('技名は255文字以内にしてください', true); return; }
+  if (allTags(S.tags).some(t => t.name === trimmed)) { toast('同じ名前のタグが既に存在します', true); return; }
+  const newId = uid();
+  const charId = S.form.charId || null;
+  const newTag = { id: newId, name: trimmed, kind: 'custom', charId, sortOrder: nextSortOrder(charId) };
+  await db.put('moveTags', newTag);
+  S.tags = await db.getAll('moveTags');
+  acSelect(newId);
+  refreshPalette();
+}
+
+async function acAddCond() {
+  const text = prompt('条件テキストを入力 (例: ヒット確認、画面端):');
+  if (text === null) { S.ac.open = false; rbRefresh(); return; }
+  const trimmed = text.trim();
+  if (!trimmed) { toast('条件テキストを入力してください', true); S.ac.open = false; rbRefresh(); return; }
+  if (trimmed.length > 255) { toast('条件テキストは255文字以内にしてください', true); S.ac.open = false; rbRefresh(); return; }
+  const at = S.ac.insertAfter + 1;
+  S.form.route.splice(at, 0, { id: uid(), type: 'condition', text: trimmed });
+  S.ac.open = false;
+  rbRefresh();
+  // マスタ未登録なら自動保存
+  if (!S.tags.some(t => t.kind === 'condition' && t.name === trimmed)) {
+    await savCondTag(trimmed);
+  }
+}
+
+// 登録済み条件タグをルートに挿入
+function acSelectCond(tagId) {
+  const tag = S.tags.find(t => String(t.id) === String(tagId));
+  if (!tag) return;
+  const at = S.ac.insertAfter + 1;
+  S.form.route.splice(at, 0, { id: uid(), type: 'condition', text: tag.name });
+  S.ac.open = false;
+  rbRefresh();
+}
+
+async function savCondTag(name) {
+  if (S.tags.some(t => t.kind === 'condition' && t.name === name)) return;
+  const newTag = { id: uid(), name, kind: 'condition', charId: null };
+  await db.put('moveTags', newTag);
+  S.tags = await db.getAll('moveTags');
+  toast(`条件「${name}」をマスタに登録しました`);
+}
+
+function delItem(i) {
+  S.form.route.splice(i, 1);
+  rbRefresh();
+}
+
+function toggleDelay(i) {
+  if (S.form.route[i]) S.form.route[i].delayed = !S.form.route[i].delayed;
+  rbRefresh();
+}
+function toggleAssist(i) {
+  if (S.form.route[i]) S.form.route[i].assist = !S.form.route[i].assist;
+  rbRefresh();
+}
+function toggleModern() {
+  S.modernMode = !S.modernMode;
+  localStorage.setItem('sf6_modern', S.modernMode ? '1' : '0');
+  refreshPalette();
+}
+
+function editCond(i) {
+  const cur = S.form.route[i].text;
+  const t = prompt('条件テキストを編集:', cur);
+  if (t === null) return;
+  const trimmed = t.trim();
+  if (!trimmed) { toast('条件テキストを入力してください', true); return; }
+  if (trimmed.length > 255) { toast('条件テキストは255文字以内にしてください', true); return; }
+  S.form.route[i].text = trimmed;
+  rbRefresh();
+}
+
+function moveItem(i, dir) {
+  const ni = i + dir;
+  if (ni < 0 || ni >= S.form.route.length) return;
+  [S.form.route[i], S.form.route[ni]] = [S.form.route[ni], S.form.route[i]];
+  rbRefresh();
+}
+
+function setGauge(n) {
+  S.form.dg = n;
+  document.querySelectorAll('.gauge-btn').forEach((b, i) => b.classList.toggle('on', i === n));
+}
+
+function toggleSa(s) {
+  S.form.sa = S.form.sa.includes(s) ? S.form.sa.filter(x => x !== s) : [...S.form.sa, s];
+  document.querySelectorAll('.sa-sel-btn').forEach(b => b.classList.toggle('on', S.form.sa.includes(b.textContent.trim())));
+}
+function toggleFormLabel(id) {
+  if (!S.form.labels) S.form.labels = [];
+  S.form.labels = S.form.labels.includes(id)
+    ? S.form.labels.filter(x => x !== id)
+    : [...S.form.labels, id];
+  // パレットのラベルチップ表示だけ更新（フォーム全体の再描画を避ける）
+  refreshPalette();
+}
+
+/* バリデーション */
+function validateForm() {
+  const errs = [];
+  if (S.form.charId === '' || S.form.charId == null) errs.push('キャラクターを選択してください');
+  if (!S.form.route.length) errs.push('コンボルートを入力してください');
+  if (S.form.damage !== '' && S.form.damage !== null) {
+    const d = Number(S.form.damage);
+    if (!Number.isInteger(d) || d < 0 || d > 99999) errs.push('ダメージは0〜99999の整数で入力してください');
+  }
+  // ルート内の条件テキストチェック
+  for (const item of S.form.route) {
+    if (item.type === 'condition') {
+      if (!item.text || !item.text.trim()) { errs.push('空の条件テキストがあります'); break; }
+      if (item.text.length > 255) { errs.push('条件テキストは255文字以内にしてください'); break; }
+    }
+  }
+  if (S.form.memo && S.form.memo.length > 500) errs.push('メモは500文字以内にしてください');
+  return errs;
+}
+
+async function saveCombo() {
+  // 保存直前にDOMのselect値をS.formに同期（onchangeが発火しなかった場合の保険）
+  const charSel = document.getElementById('fc-char');
+  if (charSel && charSel.value) S.form.charId = +charSel.value;
+  const errs = validateForm();
+  if (errs.length) { alert(errs.join('\n')); return; }
+
+  const wasEdit = S.view === 'edit';
+  const data = {
+    charId: +S.form.charId,
+    route: S.form.route,
+    dg: S.form.dg,
+    sa: S.form.sa,
+    labels: S.form.labels || [],
+    damage: (S.form.damage !== '' && S.form.damage !== null) ? +S.form.damage : null,
+    memo: S.form.memo.trim(),
+    updatedAt: Date.now(),
+  };
+  if (wasEdit && S.editId !== null) {
+    data.id = S.editId;
+    data.createdAt = S.combos.find(c => c.id === S.editId)?.createdAt || Date.now();
+  } else {
+    data.id = uid();
+    data.createdAt = Date.now();
+  }
+
+  await db.put('combos', data);
+  await loadAll();
+  S.editId = null;
+  nav('list');
+  toast(wasEdit ? '更新しました' : '登録しました');
+}
+
+/* ═══════════════════════════════════════════
+   MASTER VIEW
+═══════════════════════════════════════════ */
+function renderMaster() {
+  return `
+  <div>
+    <div class="page-title">マスタ管理</div>
+
+    <div class="master-section">
+      <div class="master-title">
+        <span>キャラクター</span>
+        <span style="color:var(--text-muted);font-weight:400">${S.chars.length}件</span>
+      </div>
+      <div class="char-list">
+        ${S.chars.map(c => {
+          if (_deleteCharId === c.id) {
+            const has = S.combos.some(cb => cb.charId === c.id);
+            return `<div class="char-item" data-charid="${c.id}">
+              <span>${escHtml(c.name)}</span>
+              <div class="char-del-confirm">
+                <span style="color:var(--red)">${has ? 'コンボあり。' : ''}削除しますか？</span>
+                <button class="btn btn-danger btn-xs" onclick="delCharExec(${c.id})">削除</button>
+                <button class="btn btn-secondary btn-xs" onclick="cancelDelChar()">キャンセル</button>
+              </div>
+            </div>`;
+          }
+          return `<div class="char-item" data-charid="${c.id}">
+            <span>${escHtml(c.name)}</span>
+            <button class="btn btn-danger btn-xs" onclick="startDelChar(${c.id})">削除</button>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="add-row">
+        <input class="add-inp" id="addCharInp" placeholder="新しいキャラクター名" onkeydown="if(event.key==='Enter')addChar()">
+        <button class="btn btn-primary btn-sm" onclick="addChar()">追加</button>
+      </div>
+    </div>
+
+    <div class="master-section">
+      <div class="master-title">
+        <span>登録済み特殊技タグ</span>
+        <span style="color:var(--text-muted);font-weight:400">${movOnlyTags().length}件</span>
+      </div>
+      <div style="padding:8px 12px 4px">
+        <select class="fctl" style="min-width:130px" onchange="_masterTagChar=this.value;masterRender()">
+          <option value="common" ${_masterTagChar==='common'?'selected':''}>キャラ共通</option>
+          ${S.chars.map(c => `<option value="${c.id}" ${_masterTagChar===String(c.id)?'selected':''}>${escHtml(c.name)}</option>`).join('')}
+        </select>
+      </div>
+      <div style="padding:4px 12px 8px">
+        ${(() => {
+          const allCustom = S.tags.filter(t => t.kind === 'custom');
+          const displayTags = (_masterTagChar === 'common'
+            ? allCustom.filter(t => t.charId == null)
+            : allCustom.filter(t => String(t.charId) === _masterTagChar))
+            .sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999));
+          if (!displayTags.length) return '<span style="color:var(--text-muted);font-size:11px">タグがありません</span>';
+          const rows = displayTags.map(t => {
+            const safe = String(t.id).replace(/'/g, "\\'");
+            const idAttr = escHtml(String(t.id));
+            return `<div class="tag-sort-row" draggable="true"
+              data-tagid="${idAttr}"
+              ondragstart="masterTagDragStart(event,this)"
+              ondragover="masterTagDragOver(event,this)"
+              ondragleave="masterTagDragLeave(event,this)"
+              ondrop="masterTagDrop(event,this)"
+              ondragend="masterTagDragEnd()">
+              <span class="tag-sort-handle" title="ドラッグして並び替え">⠿</span>
+              <span class="tag-sort-name" onclick="event.stopPropagation();tagEditStart(event,'${safe}')">${escHtml(t.name)}</span>
+              <div class="tag-sort-btns" draggable="false">
+                <span class="tag-del" draggable="false" onclick="event.stopPropagation();delTag('${safe}')">×</span>
+              </div>
+            </div>`;
+          }).join('');
+          return `<div style="column-count:2;column-gap:8px">${rows}</div>`;
+        })()}
+      </div>
+      <div class="add-row" style="margin-top:4px;flex-wrap:wrap;gap:6px">
+        <select class="fctl" id="addMoveTagChar" style="min-width:110px">
+          <option value="">キャラ共通</option>
+          ${S.chars.map(c => `<option value="${c.id}">${escHtml(c.name)}</option>`).join('')}
+        </select>
+        <input class="add-inp" id="addMoveTagInp" placeholder="技名 (例: ODボーグ)" style="flex:1;min-width:150px" onkeydown="if(event.key===\'Enter\')addMoveTag()">
+        <button class="btn btn-primary btn-sm" onclick="addMoveTag()">追加</button>
+      </div>
+    </div>
+
+    <div class="master-section">
+      <div class="master-title">
+        <span>登録済み条件タグ</span>
+        <span style="color:var(--text-muted);font-weight:400">${condTags().length}件</span>
+      </div>
+      <div class="tag-cloud">
+        ${condTags().length
+          ? condTags().map(t => {
+              const safe = String(t.id).replace(/'/g, "\\'");
+              return `<span class="tag-pill" style="background:var(--chip-cond-bg);border-color:var(--chip-cond-border);color:var(--gold)">
+                ◇ <span class="tag-editable" onclick="tagEditStart(event,'${safe}')">${escHtml(t.name)}</span>
+                <span class="tag-del" onclick="delTag('${safe}')">×</span>
+              </span>`;
+            }).join('')
+          : '<span style="color:var(--text-muted);font-size:11px">条件テキスト追加時にマスタ登録できます</span>'
+        }
+      </div>
+      <div class="add-row">
+        <input class="add-inp" id="addCondInp" placeholder="条件テキストを追加 (例: 画面端)" onkeydown="if(event.key===\'Enter\')addCondTag()">
+        <button class="btn btn-primary btn-sm" onclick="addCondTag()">追加</button>
+      </div>
+    </div>
+
+    <div class="master-section">
+      <div class="master-title">
+        <span>ラベルタグ</span>
+        <span style="color:var(--text-muted);font-weight:400">${labelTags().length}件</span>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">コンボの分類・絞り込みに使うラベル（例：初心者向け・画面端・起き攻め）</div>
+      <div class="tag-cloud">
+        ${labelTags().length
+          ? labelTags().map(t => {
+              const safe = String(t.id).replace(/'/g, "\\'");
+              return `<span class="tag-pill" style="background:rgba(46,160,67,0.1);border-color:rgba(46,160,67,0.3);color:var(--green)">
+                🏷 <span class="tag-editable" onclick="tagEditStart(event,'${safe}')">${escHtml(t.name)}</span>
+                <span class="tag-del" onclick="delTag('${safe}')">×</span>
+              </span>`;
+            }).join('')
+          : '<span style="color:var(--text-muted);font-size:11px">まだラベルがありません</span>'
+        }
+      </div>
+      <div class="add-row">
+        <input class="add-inp" id="addLabelInp" placeholder="ラベル名 (例: 初心者向け・画面端)" onkeydown="if(event.key===\'Enter\')addLabelTag()">
+        <button class="btn btn-primary btn-sm" onclick="addLabelTag()">追加</button>
+      </div>
+    </div>
+
+    ${renderMergeSection()}
+
+    <div class="master-section" style="border-color:var(--red-dim)">
+      <div class="master-title">データ管理</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm" onclick="exportJSON()">JSONエクスポート</button>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('impFileMaster').click()">JSONインポート</button>
+        <input type="file" id="impFileMaster" accept=".json" style="display:none" onchange="importJSON(this)">
+      </div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">コンボパック（combo_pack形式）のインポート。タグは名前で既存データと照合し、なければ新規作成します。</div>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('comboPackInpMaster').click()">↓ コンボを取り込む</button>
+        <input type="file" id="comboPackInpMaster" accept=".json" style="display:none" onchange="importComboPackFile(this)">
+      </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">
+          ⚠️ DBをすべてクリアします。実行前にエクスポートでバックアップを取ってください。
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="clearDB()">🗑 DBをクリア（初期状態に戻す）</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function addChar() {
+  const inp = document.getElementById('addCharInp');
+  const name = inp?.value.trim();
+  if (!name) { toast('キャラクター名を入力してください', true); return; }
+  if (name.length > 50) { toast('キャラクター名は50文字以内にしてください', true); return; }
+  if (S.chars.some(c => c.name === name)) { toast(`「${name}」は既に登録されています`, true); return; }
+  await db.put('characters', { name });
+  await loadAll();
+  inp.value = '';
+  masterRender();
+  toast(`「${name}」を追加しました`);
+}
+// 同一キャラグループの次のsortOrder値を返す
+function nextSortOrder(charId) {
+  const group = S.tags.filter(t =>
+    t.kind === 'custom' &&
+    (charId == null ? t.charId == null : String(t.charId) === String(charId))
+  );
+  if (!group.length) return 10;
+  return Math.max(...group.map(t => t.sortOrder ?? 0)) + 10;
+}
+
+async function addMoveTag() {
+  const inp     = document.getElementById('addMoveTagInp');
+  const charSel = document.getElementById('addMoveTagChar');
+  const name    = inp?.value.trim();
+  if (!name) { toast('技名を入力してください', true); return; }
+  if (name.length > 255) { toast('255文字以内にしてください', true); return; }
+  if (S.tags.some(t => t.kind === 'custom' && t.name === name)) { toast(`「${name}」は既に登録されています`, true); return; }
+  const charId = charSel?.value ? +charSel.value : null;
+  const sortOrder = nextSortOrder(charId);
+  await db.put('moveTags', { id: uid(), name, kind: 'custom', charId, sortOrder });
+  await loadAll();
+  inp.value = '';
+  masterRender();
+  toast(`特殊技「${name}」を追加しました`);
+}
+
+async function addCondTag() {
+  const inp = document.getElementById('addCondInp');
+  const name = inp?.value.trim();
+  if (!name) { toast('条件テキストを入力してください', true); return; }
+  if (name.length > 255) { toast('255文字以内にしてください', true); return; }
+  if (S.tags.some(t => t.kind === 'condition' && t.name === name)) { toast(`「${name}」は既に登録されています`, true); return; }
+  await savCondTag(name);
+  await loadAll();
+  inp.value = '';
+  masterRender();
+}
+
+async function addLabelTag() {
+  const inp = document.getElementById('addLabelInp');
+  const name = inp?.value.trim();
+  if (!name) { toast('ラベル名を入力してください', true); return; }
+  if (name.length > 50) { toast('50文字以内にしてください', true); return; }
+  if (S.tags.some(t => t.kind === 'label' && t.name === name)) { toast(`「${name}」は既に登録されています`, true); return; }
+  await db.put('moveTags', { id: uid(), name, kind: 'label', charId: null });
+  await loadAll();
+  inp.value = '';
+  masterRender();
+  toast(`ラベル「${name}」を追加しました`);
+}
+
+async function clearDB() {
+  if (!confirm('DBをクリアしますか？\nコンボ・タグデータがすべて削除され、キャラクターは初期29件に戻ります。\n\n実行前にエクスポートでバックアップを取ることを強く推奨します。')) return;
+  if (!confirm('本当にクリアしますか？この操作は取り消せません。')) return;
+  await db.clear('combos');
+  await db.clear('moveTags');
+  await db.clear('characters');
+  await seedMissingChars();
+  await loadAll();
+  S.filters = { charId: '', starterKey: '', dgMin: 0, dgMax: 6, sa: [], labels: [], moveTags: [] };
+  nav('list');
+  toast('DBをクリアしました。キャラクターを再シードしました。');
+}
+
+let _masterTagChar = 'common'; // 'common'=共通, or String(charId)
+let _merge = { charId: '', checked: new Set(), keepId: null };
+
+function mergeCharChange(val) {
+  _merge = { charId: val, checked: new Set(), keepId: null };
+  masterRender();
+}
+function mergeTagCheck(id, isChecked) {
+  const next = new Set(_merge.checked);
+  if (isChecked) {
+    next.add(id);
+    if (!_merge.keepId) _merge.keepId = id;
+  } else {
+    next.delete(id);
+    if (_merge.keepId === id) _merge.keepId = next.size > 0 ? next.values().next().value : null;
+  }
+  _merge.checked = next;
+  masterRender();
+}
+function mergeTagKeep(id) {
+  _merge.keepId = id;
+  masterRender();
+}
+async function execMerge() {
+  const { charId, checked, keepId } = _merge;
+  if (!keepId || checked.size < 2) return;
+  const deleteIds = [...checked].filter(id => id !== keepId);
+  const keepTag = S.tags.find(t => String(t.id) === keepId);
+  if (!keepTag) return;
+  const keepIdRaw = /^\d+$/.test(keepId) ? Number(keepId) : keepId;
+  const deleteIdSet = new Set(deleteIds);
+  let updated = 0;
+  for (const combo of S.combos) {
+    const newRoute = combo.route.map(item =>
+      (item.type === 'move' && deleteIdSet.has(String(item.tagId)))
+        ? { ...item, tagId: keepIdRaw }
+        : item
+    );
+    if (JSON.stringify(newRoute) !== JSON.stringify(combo.route)) {
+      await db.put('combos', { ...combo, route: newRoute });
+      updated++;
+    }
+  }
+  for (const id of deleteIds) {
+    await db.del('moveTags', /^\d+$/.test(id) ? Number(id) : id);
+  }
+  await loadAll();
+  _merge = { charId, checked: new Set([keepId]), keepId };
+  masterRender();
+  toast(`「${keepTag.name}」に統合（コンボ${updated}件更新・タグ${deleteIds.length}件削除）`);
+}
+
+function renderMergeSection() {
+  const { charId, checked, keepId } = _merge;
+  const customTags = charId
+    ? S.tags.filter(t => t.kind === 'custom' && String(t.charId) === String(charId))
+        .sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999))
+    : [];
+  const checkedTags = customTags.filter(t => checked.has(String(t.id)));
+  const keepName = keepId ? (checkedTags.find(t => String(t.id) === keepId)?.name || '') : '';
+  return `
+  <div class="master-section">
+    <div class="master-title">タグ名寄せ（統合）</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">複数のタグを1つに統合します。チェックしたタグへのコンボ参照を「残す」タグIDに書き換え、残りを削除します。</div>
+    <div style="margin-bottom:12px">
+      <select class="fctl" onchange="mergeCharChange(this.value)" style="min-width:160px">
+        <option value="">キャラクターを選択</option>
+        ${S.chars.map(c => `<option value="${c.id}" ${String(charId) === String(c.id) ? 'selected' : ''}>${escHtml(c.name)}</option>`).join('')}
+      </select>
+    </div>
+    ${!charId ? '' : customTags.length === 0
+      ? '<div style="color:var(--text-muted);font-size:11px">固有技タグがありません</div>'
+      : `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2px 8px;margin-bottom:12px;align-items:start">
+          ${customTags.map(t => {
+            const tid = String(t.id);
+            const isChecked = checked.has(tid);
+            const isKeep = keepId === tid;
+            const safeId = tid.replace(/'/g, "\\'");
+            return `<label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:5px 8px;border-radius:4px;background:${isChecked ? 'var(--surface2)' : 'transparent'}">
+              <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="mergeTagCheck('${safeId}',this.checked)" style="cursor:pointer;flex-shrink:0">
+              <span style="flex:1;font-size:13px">${escHtml(t.name)}</span>
+              ${isChecked ? `<label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;white-space:nowrap">
+                <input type="radio" name="merge-keep" ${isKeep ? 'checked' : ''} onchange="mergeTagKeep('${safeId}')">
+                <span style="color:var(--green)">残す</span>
+              </label>` : ''}
+            </label>`;
+          }).join('')}
+        </div>
+        ${checkedTags.length >= 2 && keepId
+          ? `<div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">「${escHtml(keepName)}」に統合し、他${checkedTags.length - 1}件のタグを削除します</div>
+             <button class="btn btn-primary btn-sm" onclick="execMerge()">🔗 統合を実行</button>`
+          : `<div style="font-size:11px;color:var(--text-muted)">${
+              checkedTags.length < 2
+                ? '統合したいタグを2件以上チェックしてください'
+                : '「残す」ラジオボタンで残すタグを選択してください'
+            }</div>`
+        }
+      `
+    }
+  </div>`;
+}
+
+let _deleteCharId = null;
+function startDelChar(id) {
+  _deleteCharId = id;
+  const item = document.querySelector(`.char-item[data-charid="${id}"]`);
+  if (!item) { masterRender(); return; }
+  const char = S.chars.find(c => c.id === id);
+  const name = char ? escHtml(char.name) : '';
+  const has = S.combos.some(cb => cb.charId === id);
+  item.innerHTML = `<span>${name}</span>
+    <div class="char-del-confirm">
+      <span style="color:var(--red)">${has ? 'コンボあり。' : ''}削除しますか？</span>
+      <button class="btn btn-danger btn-xs" onclick="delCharExec(${id})">削除</button>
+      <button class="btn btn-secondary btn-xs" onclick="cancelDelChar()">キャンセル</button>
+    </div>`;
+}
+function cancelDelChar() {
+  const id = _deleteCharId;
+  _deleteCharId = null;
+  const item = document.querySelector(`.char-item[data-charid="${id}"]`);
+  if (!item) { masterRender(); return; }
+  const char = S.chars.find(c => c.id === id);
+  const name = char ? escHtml(char.name) : '';
+  item.innerHTML = `<span>${name}</span>
+    <button class="btn btn-danger btn-xs" onclick="startDelChar(${id})">削除</button>`;
+}
+async function delCharExec(id) {
+  await db.del('characters', id);
+  _deleteCharId = null;
+  await loadAll();
+  masterRender();
+}
+function tagEditStart(e, id) {
+  e.stopPropagation();
+  const span = e.currentTarget;
+  const origText = span.textContent;
+  const inp = document.createElement('input');
+  inp.className = 'tag-rename-inp';
+  inp.value = origText;
+  inp.setAttribute('draggable', 'false');
+  let committed = false;
+  const commit = async () => {
+    if (committed) return;
+    committed = true;
+    const newName = inp.value.trim();
+    if (!newName || newName === origText) { inp.replaceWith(span); return; }
+    await renameTag(id, newName);
+  };
+  inp.addEventListener('click', ev => ev.stopPropagation());
+  inp.addEventListener('keydown', ev => {
+    if (ev.key === 'Enter') { ev.preventDefault(); commit(); }
+    if (ev.key === 'Escape') { committed = true; inp.replaceWith(span); }
+  });
+  inp.addEventListener('blur', commit);
+  span.replaceWith(inp);
+  inp.focus();
+  inp.select();
+}
+async function renameTag(id, newName) {
+  const tag = S.tags.find(t => String(t.id) === String(id));
+  if (!tag) return;
+  tag.name = newName;
+  await db.put('moveTags', tag);
+  masterRender();
+}
+async function delTag(id) {
+  const key = /^\d+$/.test(String(id)) ? Number(id) : id;
+  const inUse = S.combos.some(c =>
+    (c.route || []).some(r => String(r.tagId) === String(id)) ||
+    (c.labels || []).some(l => String(l) === String(id))
+  );
+  if (inUse) {
+    toast('このタグはコンボで使用中のため削除できません', true);
+    return;
+  }
+  if (!confirm('このタグを削除しますか？')) return;
+  await db.del('moveTags', key);
+  await loadAll();
+  masterRender();
+  toast('タグを削除しました');
+}
+
+/* ── マスタタグ D&D 並び替え ──────────────── */
+let _masterDND = { tagId: null };
+
+function masterTagDragStart(e, el) {
+  _masterDND.tagId = el.dataset.tagid;
+  e.dataTransfer.effectAllowed = 'move';
+  el.classList.add('dnd-dragging');
+}
+function masterTagDragOver(e, el) {
+  if (!_masterDND.tagId || _masterDND.tagId === el.dataset.tagid) return;
+  e.preventDefault();
+  el.classList.add('dnd-over');
+}
+function masterTagDragLeave(e, el) {
+  el.classList.remove('dnd-over');
+}
+async function masterTagDrop(e, el) {
+  e.preventDefault();
+  el.classList.remove('dnd-over');
+  const srcId = _masterDND.tagId;
+  const tgtId = el.dataset.tagid;
+  if (!srcId || srcId === tgtId) return;
+
+  const srcTag = S.tags.find(t => String(t.id) === srcId);
+  const tgtTag = S.tags.find(t => String(t.id) === tgtId);
+  if (!srcTag || !tgtTag) return;
+  // 同一キャラグループのみ並び替え可能
+  const sameGroup =
+    (srcTag.charId == null && tgtTag.charId == null) ||
+    (srcTag.charId != null && tgtTag.charId != null && String(srcTag.charId) === String(tgtTag.charId));
+  if (!sameGroup) { toast('同じキャラ内でのみ並び替えできます', true); return; }
+
+  const group = S.tags
+    .filter(t => t.kind === 'custom' &&
+      (srcTag.charId == null ? t.charId == null : String(t.charId) === String(srcTag.charId)))
+    .sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999));
+
+  const srcIdx = group.findIndex(t => String(t.id) === srcId);
+  const tgtIdx = group.findIndex(t => String(t.id) === tgtId);
+  // srcをtgtの位置に移動
+  const reordered = [...group];
+  const [moved] = reordered.splice(srcIdx, 1);
+  reordered.splice(tgtIdx, 0, moved);
+  // sortOrderを再付番して保存
+  for (let i = 0; i < reordered.length; i++) {
+    await db.put('moveTags', { ...reordered[i], sortOrder: i * 10 });
+  }
+  _masterDND.tagId = null;
+  await loadAll();
+  masterRender();
+}
+function masterTagDragEnd() {
+  _masterDND.tagId = null;
+  document.querySelectorAll('.tag-sort-row').forEach(el => {
+    el.classList.remove('dnd-dragging', 'dnd-over');
+  });
+}
+
+/* ═══════════════════════════════════════════
+   TAG ID MIGRATION (旧形式 sys_↓小P → 新形式 2LP)
+═══════════════════════════════════════════ */
+async function migrateToNewTagIds() {
+  // 旧ID → 新ID マッピングを構築
+  const map = {};
+  for (const d of DIRS) for (const s of STR) for (const tp of TYPES)
+    map[`sys_${d}${s}${tp}`] = `${DIR_NUM[d]}${STR_CHAR[s]}${tp}`;
+  map['sys_CR']      = 'CR';
+  map['sys_SA1']     = 'SA1';
+  map['sys_SA2']     = 'SA2';
+  map['sys_SA3']     = 'SA3';
+  map['sys_CA']      = 'CA';
+  map['sys_throw']   = '投げ';
+  map['sys_fwalk']   = '前歩き';
+  map['sys_fdash']   = '前ステ';
+  map['sys_rawrush'] = '生ラッシュ';
+  map['sys_fjump']   = '前ジャンプ';
+
+  const targets = S.combos.filter(c =>
+    (c.route || []).some(r => r.type === 'move' && typeof r.tagId === 'string' && map[r.tagId])
+  );
+  if (!targets.length) { toast('変換対象のコンボはありません'); return; }
+
+  if (!confirm(`${targets.length}件のコンボに含まれる旧形式の通常技IDを変換します。\n実行前にエクスポートでバックアップを取ってください。\n続行しますか？`)) return;
+
+  for (const combo of targets) {
+    const newRoute = combo.route.map(item =>
+      (item.type === 'move' && map[item.tagId])
+        ? { ...item, tagId: map[item.tagId] }
+        : item
+    );
+    await db.put('combos', { ...combo, route: newRoute });
+  }
+  await loadAll();
+  render();
+  toast(`変換完了：${targets.length}件のコンボを更新しました`);
+}
+
+async function removeDanglingTags() {
+  const dangling = new Set();
+  S.combos.forEach(c => {
+    (c.route || []).forEach(item => {
+      if (item.type === 'move' && !findTag(item.tagId, S.tags)) dangling.add(String(item.tagId));
+    });
+  });
+  if (!dangling.size) { toast('不明タグは見つかりませんでした'); return; }
+  const ids = [...dangling].join(', ');
+  if (!confirm(`不明タグID: ${ids}\n\nこれらを含むルート項目を全コンボから除去します。続行しますか？`)) return;
+  let updated = 0;
+  for (const combo of S.combos) {
+    const newRoute = (combo.route || []).filter(item =>
+      !(item.type === 'move' && !findTag(item.tagId, S.tags))
+    );
+    if (newRoute.length !== combo.route.length) {
+      await db.put('combos', { ...combo, route: newRoute });
+      updated++;
+    }
+  }
+  await loadAll();
+  render();
+  toast(`${updated}件のコンボから不明タグを除去しました`);
+}
+
+/* ═══════════════════════════════════════════
+   EXPORT / IMPORT
+═══════════════════════════════════════════ */
+/* ── コンボパック エクスポート ── */
+function exportComboPack(combos) {
+  if (!combos.length) { toast('出力するコンボがありません', true); return; }
+  // 参照されているタグIDを収集
+  const usedTagIds = new Set();
+  combos.forEach(c => {
+    (c.route || []).forEach(item => { if (item.type === 'move') usedTagIds.add(String(item.tagId)); });
+    (c.labels || []).forEach(id => usedTagIds.add(String(id)));
+  });
+  const moveTags = S.tags.filter(t => usedTagIds.has(String(t.id)));
+  const data = { type: 'combo_pack', version: 1, exportedAt: new Date().toISOString(), combos, moveTags };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement('a'), {
+    href: url,
+    download: `sf6combo_pack_${new Date().toISOString().slice(0,10)}.json`
+  });
+  a.click();
+  URL.revokeObjectURL(url);
+  toast(`${combos.length}件のコンボをエクスポートしました`);
+}
+function exportSingleCombo(id) {
+  const combo = S.combos.find(c => c.id === id);
+  if (combo) exportComboPack([combo]);
+}
+function exportFilteredCombos() {
+  exportComboPack(filteredCombos());
+}
+
+/* ── コンボパック インポート ── */
+async function importComboPackFile(input) {
+  const file = input.files[0];
+  input.value = '';
+  if (!file) return;
+  try {
+    const data = JSON.parse(await file.text());
+    if (data.type !== 'combo_pack') throw new Error('combo_pack形式のファイルではありません');
+    const packTags  = Array.isArray(data.moveTags) ? data.moveTags : [];
+    const packCombos = Array.isArray(data.combos)  ? data.combos  : [];
+    if (!packCombos.length) { toast('コンボが含まれていません', true); return; }
+
+    // タグIDマッピング: packのid → 既存or新規のid
+    const tagIdMap = new Map();
+    let newTagCount = 0, mergedTagCount = 0;
+    for (const pt of packTags) {
+      const nameKey = String(pt.name || '').trim();
+      const charIdKey = pt.charId == null ? null : String(pt.charId);
+      // 同名・同charIdの既存タグを検索
+      const existing = S.tags.find(t =>
+        t.name === nameKey &&
+        (pt.charId == null ? t.charId == null : String(t.charId) === charIdKey)
+      );
+      if (existing) {
+        tagIdMap.set(String(pt.id), String(existing.id));
+        mergedTagCount++;
+      } else {
+        const newId = uid();
+        tagIdMap.set(String(pt.id), newId);
+        const newTag = { id: newId, name: escHtml(nameKey.slice(0,255)), kind: pt.kind || 'custom',
+          charId: pt.charId ?? null, sortOrder: nextSortOrder(pt.charId ?? null) };
+        await db.put('moveTags', newTag);
+        newTagCount++;
+      }
+    }
+    // コンボをインポート（常に新規追加）
+    for (const c of packCombos) {
+      const route = (c.route || []).map(item => {
+        if (item.type === 'move') {
+          const mapped = tagIdMap.get(String(item.tagId));
+          const tagId = mapped
+            ? (/^\d+$/.test(mapped) ? Number(mapped) : mapped)
+            : item.tagId;
+          return { ...item, id: uid(), tagId };
+        }
+        return { ...item, id: uid() };
+      });
+      const labels = (c.labels || []).map(id => tagIdMap.get(String(id)) || id);
+      const newCombo = { ...c, id: uid(), route, labels,
+        charId: typeof c.charId === 'number' ? c.charId : Number(c.charId),
+        createdAt: Date.now(), updatedAt: Date.now() };
+      await db.put('combos', newCombo);
+    }
+    await loadAll();
+    render();
+    toast(`コンボ${packCombos.length}件をインポート（タグ新規${newTagCount}件・既存統合${mergedTagCount}件）`);
+  } catch(e) {
+    toast('取り込みエラー: ' + e.message, true);
+  }
+}
+
+function exportJSON() {
+  const data = { version: 2, exportedAt: new Date().toISOString(), characters: S.chars, moveTags: S.tags, combos: S.combos };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement('a'), { href: url, download: `sf6combo_${new Date().toISOString().slice(0,10)}.json` });
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('エクスポートしました');
+}
+// ── インポートデータのバリデーション＋サニタイズ ──
+function validateImportData(data) {
+  if (!data || typeof data !== 'object') throw new Error('ルートオブジェクトが不正');
+  // 最低1つのリストが必要
+  if (!Array.isArray(data.characters) && !Array.isArray(data.moveTags) && !Array.isArray(data.combos))
+    throw new Error('有効なリストがありません');
+
+  // characters
+  for (const c of (data.characters || [])) {
+    if (!c || typeof c !== 'object') throw new Error('characters に不正な要素');
+    if (c.id == null) throw new Error('characters.id が未定義');
+    // 文字列フィールドをサニタイズ（スクリプト注入対策）
+    c.name = escHtml(String(c.name || '').slice(0, 50));
+  }
+
+  // moveTags
+  for (const t of (data.moveTags || [])) {
+    if (!t || typeof t !== 'object') throw new Error('moveTags に不正な要素');
+    if (t.id == null) throw new Error('moveTags.id が未定義');
+    t.name = escHtml(String(t.name || '').slice(0, 255));
+    t.kind = ['normal','system','sa','throw','custom','condition','label'].includes(t.kind) ? t.kind : 'custom';
+  }
+
+  // combos
+  for (const c of (data.combos || [])) {
+    if (!c || typeof c !== 'object') throw new Error('combos に不正な要素');
+    if (c.id == null) throw new Error('combos.id が未定義');
+    if (!Array.isArray(c.route)) throw new Error('combos.route が配列でない');
+    if (c.charId == null) throw new Error('combos.charId が未定義');
+    // routeのサニタイズ
+    c.route = c.route.map(item => {
+      if (!item || typeof item !== 'object') throw new Error('route に不正な要素');
+      // id がなければ自動補完
+      if (!item.id) item.id = uid();
+      if (item.type === 'condition') {
+        item.text = escHtml(String(item.text || '').slice(0, 255));
+      } else if (item.type === 'move') {
+        if (item.tagId == null) throw new Error('route.move.tagId が未定義');
+      } else {
+        throw new Error(`不明なroute type: ${item.type}`);
+      }
+      return item;
+    });
+    // 数値フィールドの型チェック
+    if (c.dg != null && (typeof c.dg !== 'number' || c.dg < 0 || c.dg > 6))
+      c.dg = 0;
+    if (c.damage != null && (typeof c.damage !== 'number' || c.damage < 0 || c.damage > 99999))
+      c.damage = null;
+    c.memo = escHtml(String(c.memo || '').slice(0, 500));
+    c.sa = Array.isArray(c.sa) ? c.sa.filter(s => ['SA1','SA2','SA3','CA'].includes(s)) : [];
+    c.labels = Array.isArray(c.labels) ? c.labels.filter(id => typeof id === 'string') : [];
+  }
+}
+
+async function importJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const text = await file.text();
+  try {
+    const data = JSON.parse(text);
+
+    // バリデーション＋サニタイズ（破壊的変更でdataを浄化）
+    validateImportData(data);
+
+    // 既存IDを収集
+    const existCharByName = new Map(S.chars.map(c => [c.name, c.id])); // name → 既存ID
+    const existTagIds     = new Set(S.tags.map(t => String(t.id)));
+    const existComboIds   = new Set(S.combos.map(c => String(c.id)));
+
+    // キャラクター: 名前で重複チェック（IDが違っても同名なら既存IDにリマップ）
+    const charIdRemap = new Map(); // JSON内charId → 既存/追加後のcharId
+    const newChars = [];
+    let skipCharCount = 0;
+    for (const c of (data.characters || [])) {
+      if (existCharByName.has(c.name)) {
+        charIdRemap.set(c.id,        existCharByName.get(c.name));
+        charIdRemap.set(String(c.id), String(existCharByName.get(c.name)));
+        skipCharCount++;
+      } else {
+        newChars.push(c);
+        existCharByName.set(c.name, c.id);
+      }
+    }
+
+    const newTags   = (data.moveTags || []).filter(t => !existTagIds.has(String(t.id)));
+    // コンボのcharIdをリマップしてから重複チェック
+    const remappedCombos = (data.combos || []).map(c => ({
+      ...c,
+      charId: charIdRemap.has(c.charId) ? charIdRemap.get(c.charId)
+            : charIdRemap.has(String(c.charId)) ? charIdRemap.get(String(c.charId))
+            : c.charId
+    }));
+    const newCombos = remappedCombos.filter(c => !existComboIds.has(String(c.id)));
+    const skipCount = skipCharCount + ((data.moveTags?.length || 0) - newTags.length)
+                    + ((data.combos?.length || 0) - newCombos.length);
+
+    const msg = [
+      `追加：キャラ ${newChars.length}件 / タグ ${newTags.length}件 / コンボ ${newCombos.length}件`,
+      skipCount > 0 ? `スキップ（ID重複）：${skipCount}件` : null,
+      newCombos.length > 0 ? '⚠️ 内容が似たコンボが含まれる可能性があります。インポート後に一覧を確認してください。' : null,
+      '\nインポートしますか？'
+    ].filter(Boolean).join('\n');
+
+    if (!confirm(msg)) return;
+
+    for (const c of newChars)  await db.put('characters', c);
+    for (const t of newTags)   await db.put('moveTags', t);
+    for (const c of newCombos) await db.put('combos', c);
+
+    await loadAll();
+    render();
+    toast(`インポート完了：コンボ +${newCombos.length}件`);
+  } catch (err) {
+    toast(`インポートエラー: ${err.message || 'ファイルが正しくありません'}`, true);
+  }
+  input.value = '';
+}
+
+/* ═══════════════════════════════════════════
+   BIND / UTILS
+═══════════════════════════════════════════ */
+function bindAll() {
+  document.querySelectorAll('[data-nav]').forEach(b => {
+    b.onclick = () => {
+      if (b.dataset.nav === 'new') { S.editId = null; initForm(null); }
+      nav(b.dataset.nav);
+    };
+  });
+}
+
+let toastT = null;
+function toast(msg, err = false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast show${err ? ' err' : ''}`;
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.className = 'toast', 3000);
+}
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+/* ═══════════════════════════════════════════
+   PALETTE
+═══════════════════════════════════════════ */
+let palNormalQ = '';
+let palCustomQ = '';
+let palCondQ = '';
+
+function renderPalette() {
+  const charId = S.form.charId;
+  const customTags = S.tags
+    .filter(t => t.kind !== 'condition' && t.kind !== 'label' && !t.system && charId && String(t.charId) === String(charId))
+    .sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999));
+  const classicTags    = SYS_TAGS.filter(t => t.kind === 'normal');
+  const modernNormTags = SYS_TAGS.filter(t => t.kind === 'modern-normal' || t.kind === 'modern');
+  const otherTags      = SYS_TAGS.filter(t => t.kind === 'other');
+  const condTagList    = condTags();
+
+  const filteredCustom  = customTags.filter(t => !palCustomQ || t.name.toLowerCase().includes(palCustomQ.toLowerCase()));
+  const filteredClassic = classicTags.filter(t => !palNormalQ || t.name.toLowerCase().includes(palNormalQ.toLowerCase()));
+  const filteredCond    = condTagList.filter(t => !palCondQ || t.name.toLowerCase().includes(palCondQ.toLowerCase()));
+
+  const customSection = `
+    <div class="palette-box">
+      <div class="palette-title">キャラ固有技${charId ? '' : '（キャラ未選択）'}</div>
+      ${charId ? `<input class="palette-search" placeholder="絞り込み..." value="${escHtml(palCustomQ)}"
+        oninput="palCustomQ=this.value;refreshPalette()" autocomplete="off">` : ''}
+      <div class="palette-chips">
+        ${filteredCustom.length
+          ? filteredCustom.map(t => paletteChip(t, 'move-p')).join('')
+          : `<span style="color:var(--text-muted);font-size:11px;padding:4px">${charId ? '技なし（コンボ登録時に追加されます）' : 'キャラを選択してください'}</span>`}
+      </div>
+    </div>`;
+
+  const classicSection = !S.modernMode ? `
+    <div class="palette-box">
+      <div class="palette-title">通常技 / クラシック</div>
+      <input class="palette-search" placeholder="絞り込み..." value="${escHtml(palNormalQ)}"
+        oninput="palNormalQ=this.value;refreshPalette()" autocomplete="off">
+      <div class="palette-chips">
+        ${filteredClassic.map(t => paletteChip(t, 'sys-p')).join('')}
+      </div>
+    </div>` : '';
+
+  const modernNormSection = S.modernMode ? `
+    <div class="palette-box">
+      <div class="palette-title" style="color:var(--blue)">通常技 / モダン</div>
+      <div class="palette-chips">
+        ${modernNormTags.map(t => paletteChip(t, 'sys-p')).join('')}
+      </div>
+    </div>` : '';
+
+  const otherSection = `
+    <div class="palette-box">
+      <div class="palette-title">通常技 / その他</div>
+      <div class="palette-chips">
+        ${otherTags.map(t => paletteChip(t, 'sys-p')).join('')}
+      </div>
+    </div>`;
+
+  const condSection = `
+    <div class="palette-box">
+      <div class="palette-title" style="color:var(--gold)">◇ 条件タグ</div>
+      ${condTagList.length ? `<input class="palette-search" placeholder="絞り込み..." value="${escHtml(palCondQ)}"
+        oninput="palCondQ=this.value;refreshPalette()" autocomplete="off">` : ''}
+      <div class="palette-chips">
+        ${filteredCond.length
+          ? filteredCond.map(t => condPaletteChip(t)).join('')
+          : `<span style="color:var(--text-muted);font-size:11px;padding:4px">マスタ管理で条件を登録できます</span>`}
+      </div>
+    </div>`;
+
+  const labelTagList = labelTags();
+  const labelSection = `
+    <div class="palette-box">
+      <div class="palette-title" style="color:var(--green)">🏷 ラベル</div>
+      <div class="palette-chips" style="max-height:none;flex-wrap:wrap">
+        ${labelTagList.length
+          ? labelTagList.map(t => {
+              const safe = String(t.id).replace(/'/g, "\\'");
+              const on = S.form.labels && S.form.labels.includes(t.id);
+              return `<span class="palette-chip label-p ${on ? 'label-on' : ''}"
+                onclick="toggleFormLabel('${safe}')"
+                title="クリックでラベルをトグル">${escHtml(t.name)}</span>`;
+            }).join('')
+          : `<span style="color:var(--text-muted);font-size:11px;padding:4px">マスタ管理でラベルを登録できます</span>`}
+      </div>
+    </div>`;
+
+  const modernToggle = `
+    <div class="palette-box">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding-right:8px">
+        <span class="palette-title" style="margin-bottom:0;color:var(--blue)">⚡ モダン操作</span>
+        <button class="btn btn-sm" style="font-size:11px;padding:2px 8px;background:${S.modernMode ? 'var(--blue)' : 'var(--surface2)'};color:${S.modernMode ? '#fff' : 'var(--text-muted)'};border:1px solid ${S.modernMode ? 'var(--blue)' : 'var(--border)'}"
+          onclick="toggleModern()">${S.modernMode ? 'ON' : 'OFF'}</button>
+      </div>
+    </div>`;
+
+  return customSection + classicSection + modernNormSection + otherSection + condSection + labelSection + modernToggle;
+}
+
+function paletteChip(tag, cls) {
+  // data属性にIDを持たせてJS側で取得する（クォート問題を回避）
+  const idAttr = escHtml(String(tag.id));
+  const safe = String(tag.id).replace(/'/g, "\\'");
+  return `<span class="palette-chip ${cls}" draggable="true"
+    data-tagid="${idAttr}"
+    ondragstart="paletteDragStart(event,this)"
+    ondragend="paletteDragEnd(event)"
+    onclick="paletteClick('${safe}')"
+    title="クリックで末尾に追加 / ドラッグで位置指定">${escHtml(tagDisplayName(tag))}</span>`;
+}
+
+function paletteClick(tagId) {
+  const raw = /^\d+$/.test(tagId) ? Number(tagId) : tagId;
+  S.form.route.push({ id: uid(), type: 'move', tagId: raw, delayed: false, assist: false });
+  rbRefresh();
+}
+
+function refreshPalette() {
+  const el = document.getElementById('palette');
+  if (el) el.innerHTML = renderPalette();
+}
+
+function condPaletteChip(tag) {
+  const idAttr = escHtml(String(tag.id));
+  const safeName = escHtml(tag.name).replace(/'/g, "&#39;");
+  return `<span class="palette-chip" draggable="true"
+    data-tagid="${idAttr}" data-condname="${escHtml(tag.name)}"
+    style="background:var(--chip-cond-bg);border:1px solid var(--chip-cond-border);color:var(--gold)"
+    ondragstart="condPaletteDragStart(event,this)"
+    ondragend="paletteDragEnd(event)"
+    onclick="condPaletteClick(this.dataset.condname)"
+    title="クリックで末尾に追加 / ドラッグで位置指定">◇ ${escHtml(tag.name)}</span>`;
+}
+
+function condPaletteClick(condText) {
+  S.form.route.push({ id: uid(), type: 'condition', text: condText });
+  rbRefresh();
+}
+
+// ── 条件パレット専用のDnD ──────────────────
+function condPaletteDragStart(e, el) {
+  DND.source = 'palette-cond';
+  DND.condText = el.dataset.condname;
+  DND.tagId = null;
+  DND.routeIndex = null;
+  e.dataTransfer.effectAllowed = 'copy';
+  el.classList.add('dragging');
+}
+
+function onCharChange(val) {
+  S.form.charId = val ? +val : '';
+  palCustomQ = '';
+  rbRefresh();
+  refreshPalette();
+}
+
+/* ═══════════════════════════════════════════
+   DRAG & DROP
+═══════════════════════════════════════════ */
+const DND = { source: null, tagId: null, routeIndex: null, condText: null };
+
+// ── パレット → ルート ──────────────────────
+function paletteDragStart(e, el) {
+  const raw = el.dataset.tagid;
+  DND.tagId = /^\d+$/.test(raw) ? Number(raw) : raw;
+  DND.source = 'palette';
+  DND.routeIndex = null;
+  e.dataTransfer.effectAllowed = 'copy';
+  el.classList.add('dragging');
+}
+function dndReset() {
+  DND.source = null;
+  DND.tagId = null;
+  DND.routeIndex = null;
+  DND.condText = null;
+  // ドラッグ中の視覚状態もクリア
+  document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+  document.querySelectorAll('.drag-over, .drag-over-chip, .drag-over-end').forEach(el => {
+    el.classList.remove('drag-over', 'drag-over-chip', 'drag-over-end');
+  });
+}
+
+function paletteDragEnd(e) {
+  dndReset();
+}
+
+// ── ルート内チップ並び替え ─────────────────
+function chipDragStart(e, index) {
+  // ボタン類からのドラッグは無視（×・▲▼・遅 クリック誤検知対策）
+  if (e.target.closest('.chip-x, .chip-move-btn, .chip-delay, .chip-assist')) {
+    e.preventDefault();
+    return;
+  }
+  DND.source = 'route';
+  DND.routeIndex = index;
+  DND.tagId = null;
+  e.dataTransfer.effectAllowed = 'move';
+  e.stopPropagation();
+}
+function chipDragEnd(e) {
+  dndReset();
+}
+function chipDragOver(e, index) {
+  if (!DND.source) return;
+  e.preventDefault();
+  e.stopPropagation();
+  e.currentTarget.classList.add('drag-over-chip');
+}
+function chipDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over-chip');
+}
+function chipDrop(e, targetIndex) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (DND.source === 'route' && DND.routeIndex !== null && DND.routeIndex !== targetIndex) {
+    const item = S.form.route.splice(DND.routeIndex, 1)[0];
+    const insertAt = DND.routeIndex < targetIndex ? targetIndex - 1 : targetIndex;
+    S.form.route.splice(insertAt, 0, item);
+    DND.source = null;
+    rbRefresh();
+  } else if (DND.source === 'palette' && DND.tagId !== null) {
+    S.form.route.splice(targetIndex, 0, { id: uid(), type: 'move', tagId: DND.tagId, delayed: false, assist: false });
+    DND.source = null;
+    rbRefresh();
+  } else if (DND.source === 'palette-cond' && DND.condText) {
+    S.form.route.splice(targetIndex, 0, { id: uid(), type: 'condition', text: DND.condText });
+    DND.source = null;
+    rbRefresh();
+  }
+}
+
+// ── ins-btn ドロップゾーン ─────────────────
+function insBtnDragover(e, after) {
+  if (!DND.source) return;
+  e.preventDefault();
+  e.stopPropagation();
+  e.currentTarget.classList.add('drag-over');
+}
+function insBtnDragleave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+function insBtnDrop(e, after) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.currentTarget.classList.remove('drag-over');
+  const insertAt = after + 1;
+  if (DND.source === 'palette' && DND.tagId !== null) {
+    S.form.route.splice(insertAt, 0, { id: uid(), type: 'move', tagId: DND.tagId, delayed: false, assist: false });
+    DND.source = null;
+    rbRefresh();
+  } else if (DND.source === 'palette-cond' && DND.condText) {
+    S.form.route.splice(insertAt, 0, { id: uid(), type: 'condition', text: DND.condText });
+    DND.source = null;
+    rbRefresh();
+  } else if (DND.source === 'route' && DND.routeIndex !== null) {
+    const from = DND.routeIndex;
+    const item = S.form.route.splice(from, 1)[0];
+    const to = from <= after ? after : after + 1;
+    S.form.route.splice(to, 0, item);
+    DND.source = null;
+    rbRefresh();
+  }
+}
+
+// ── rb-items エリア全体（末尾ドロップ）──────
+function rbAreaDragover(e) {
+  if (!DND.source) return;
+  // ins-btnで処理されていない場合のみ（末尾追加）
+  if (e.target.closest('.ins-btn') || e.target.closest('.rb-chip')) return;
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over-end');
+}
+function rbAreaDragleave(e) {
+  e.currentTarget.classList.remove('drag-over-end');
+}
+function rbAreaDrop(e) {
+  if (e.target.closest('.ins-btn') || e.target.closest('.rb-chip')) return;
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over-end');
+  if (DND.source === 'palette' && DND.tagId !== null) {
+    S.form.route.push({ id: uid(), type: 'move', tagId: DND.tagId, delayed: false, assist: false });
+    DND.source = null;
+    rbRefresh();
+  } else if (DND.source === 'palette-cond' && DND.condText) {
+    S.form.route.push({ id: uid(), type: 'condition', text: DND.condText });
+    DND.source = null;
+    rbRefresh();
+  } else if (DND.source === 'route' && DND.routeIndex !== null) {
+    const item = S.form.route.splice(DND.routeIndex, 1)[0];
+    S.form.route.push(item);
+    DND.source = null;
+    rbRefresh();
+  }
+}
+
+// ── 条件テキスト直接追加ボタン ───────────────
+async function acAddCondDirect() {
+  const text = prompt('条件テキストを入力 (例: ヒット確認、画面端):');
+  if (text === null) return;
+  const trimmed = text.trim();
+  if (!trimmed) { toast('条件テキストを入力してください', true); return; }
+  if (trimmed.length > 255) { toast('条件テキストは255文字以内にしてください', true); return; }
+  S.form.route.push({ id: uid(), type: 'condition', text: trimmed });
+  // マスタ未登録なら自動保存
+  if (!S.tags.some(t => t.kind === 'condition' && t.name === trimmed)) {
+    await savCondTag(trimmed);
+  }
+  rbRefresh();
+}
+
+/* ═══════════════════════════════════════════
+   HELP MODAL
+═══════════════════════════════════════════ */
+function openHelp() {
+  document.getElementById('helpModal').style.display = 'flex';
+}
+function closeHelp() {
+  document.getElementById('helpModal').style.display = 'none';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeHelp();
+});
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+// ドラッグが予期せず中断した場合もDNDをリセット
+document.addEventListener('dragend', () => dndReset());
+
+(async () => {
+  await db.open();
+  await seedMissingChars();
+  await loadAll();
+  render();
+})();
+</script>
+</body>
+</html>
