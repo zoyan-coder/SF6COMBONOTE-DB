@@ -68,6 +68,18 @@ JSONを読み込むと自動で問題を検出・修正します。
 
 ---
 
+## 推奨環境
+
+| 項目 | 推奨 |
+|------|------|
+| デバイス | PC（Windows / Mac） |
+| ブラウザ | Chrome / Edge / Firefox 最新版 |
+| 画面幅 | 1024px 以上 |
+
+> スマートフォン・タブレットでは一部機能（ドラッグ＆ドロップ等）が正しく動作しない場合があります。
+
+---
+
 ## バグ報告・機能リクエスト
 
 [GitHub Issues](https://github.com/zoyan-coder/SF6COMBONOTE-DB/issues) または [GitHub のDM](https://github.com/zoyan-coder) までお気軽にどうぞ。

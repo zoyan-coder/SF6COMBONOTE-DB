@@ -923,6 +923,9 @@ textarea.form-ctrl:focus { border-color: var(--red); }
   </nav>
   <button class="help-btn" onclick="openHelp()" title="使い方">?</button>
 </header>
+<div id="mobile-warn" style="display:none;background:#f0a500;color:#1a1b2a;text-align:center;padding:10px 16px;font-size:13px;font-weight:600;">
+  ⚠ このツールはPCブラウザ向けに設計されています。スマートフォンでは一部機能が正しく動作しない場合があります。
+</div>
 <main id="app"></main>
 <div class="toast" id="toast"></div>
 
@@ -3096,6 +3099,10 @@ document.addEventListener('dragend', () => dndReset());
   await seedMissingChars();
   await loadAll();
   render();
+  // モバイル検知バナー
+  if (window.innerWidth < 768) {
+    document.getElementById('mobile-warn').style.display = 'block';
+  }
 })();
 </script>
 </body>
