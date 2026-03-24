@@ -241,6 +241,26 @@ function analyzeAndFix(data) {
     issues.push({ level: 'ok', msg: 'moveTag ID はすべてUUID形式' });
   }
 
+  /* ── 2b. combo 数値/短縮ID → UUID 変換 ── */
+  const comboIdMap = new Map(); // 旧ID → 新UUID
+  const nonUuidCombos = combos.filter(c => {
+    const s = String(c.id);
+    return typeof c.id === 'number' || /^\d+$/.test(s);
+  });
+
+  if (nonUuidCombos.length > 0) {
+    issues.push({ level: 'warn', msg: `コンボ 数値/短縮ID ${nonUuidCombos.length}件 → UUID形式に変換` });
+    fixes.push(`コンボID UUID変換 ${nonUuidCombos.length}件`);
+    for (const combo of nonUuidCombos) {
+      const newId = uid();
+      comboIdMap.set(combo.id, newId);
+      comboIdMap.set(String(combo.id), newId);
+      combo.id = newId;
+    }
+  } else {
+    issues.push({ level: 'ok', msg: 'コンボID はすべてUUID形式' });
+  }
+
   /* ── 3. 旧形式通常技ID（sys_xxx）→ 新形式（2LP等）変換 ── */
   let sysConvCount = 0;
   for (const combo of combos) {

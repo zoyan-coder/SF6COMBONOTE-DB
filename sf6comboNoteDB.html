@@ -1259,31 +1259,66 @@ function itemKey(item) {
   if (!item) return '';
   return item.type === 'move' ? `m:${item.tagId}:${item.delayed ? 1 : 0}` : `c:${item.text}`;
 }
-function lcp(combos) {
-  if (!combos.length) return 0;
-  const min = Math.min(...combos.map(c => (c.route || []).length));
-  for (let i = 0; i < min; i++) {
-    const k = itemKey(combos[0].route[i]);
-    if (combos.some(c => itemKey(c.route[i]) !== k)) return i;
-  }
-  return min;
-}
-function groupCombos(combos) {
-  const groups = [], used = new Set();
-  for (let i = 0; i < combos.length; i++) {
-    if (used.has(i)) continue;
-    const grp = [i];
-    for (let j = i + 1; j < combos.length; j++) {
-      if (used.has(j)) continue;
-      const plen = lcp([combos[i], combos[j]]);
-      if (plen >= 1) { grp.push(j); used.add(j); }
+function buildTrie(combos) {
+  const root = { item: null, children: new Map(), combos: [] };
+  for (const combo of combos) {
+    let node = root;
+    for (const item of (combo.route || [])) {
+      const k = itemKey(item);
+      if (!node.children.has(k)) node.children.set(k, { item, children: new Map(), combos: [] });
+      node = node.children.get(k);
     }
-    used.add(i);
-    const gc = grp.map(idx => combos[idx]);
-    const pl = lcp(gc);
-    groups.push({ common: pl > 0 ? gc[0].route.slice(0, pl) : [], branches: gc.map(c => ({ combo: c, tail: c.route.slice(pl) })), single: gc.length === 1 });
+    node.combos.push(combo);
   }
-  return groups;
+  return root;
+}
+function trieChildrenSorted(node) {
+  return [...node.children.values()].sort((a, b) => {
+    const ta = a.item && a.item.type === 'move' ? findTag(a.item.tagId, S.tags) : null;
+    const tb = b.item && b.item.type === 'move' ? findTag(b.item.tagId, S.tags) : null;
+    const na = ta ? tagDisplayName(ta) : (a.item ? itemKey(a.item) : '');
+    const nb = tb ? tagDisplayName(tb) : (b.item ? itemKey(b.item) : '');
+    return na.localeCompare(nb, 'ja');
+  });
+}
+function renderTrieLevel(parentNode, depth) {
+  let html = '';
+  const kids = trieChildrenSorted(parentNode);
+  kids.forEach((child, idx) => {
+    html += renderTrieBranch(child, depth, idx === kids.length - 1);
+  });
+  return html;
+}
+function renderTrieBranch(startNode, depth, isLast) {
+  // Collect chain: follow single-child, no-combo nodes
+  const chain = [];
+  let node = startNode;
+  while (true) {
+    chain.push(node.item);
+    const kids = [...node.children.values()];
+    if (kids.length === 1 && node.combos.length === 0) { node = kids[0]; }
+    else break;
+  }
+  const gl = depth === 0 ? '' : (isLast ? '└' : '├');
+  const pad = 14 + depth * 45;
+  const chainHtml = renderChips(chain);
+  const termKids = trieChildrenSorted(node);
+  let html = '';
+  if (termKids.length === 0) {
+    // Leaf
+    node.combos.forEach((combo, ci) => {
+      html += `<div class="tree-branch" style="padding-left:${pad}px">${gl ? `<span class="branch-glyph">${ci===0?gl:''}</span>` : ''}${ci===0?chainHtml:''}</div>
+      <div style="padding-left:${pad+24}px">${renderMeta(combo)}</div>`;
+    });
+  } else {
+    // Branch point
+    html += `<div class="tree-branch" style="padding-left:${pad}px">${gl ? `<span class="branch-glyph">${gl}</span>` : ''}${chainHtml}</div>`;
+    node.combos.forEach(combo => {
+      html += `<div style="padding-left:${pad+24}px">${renderMeta(combo)}</div>`;
+    });
+    html += renderTrieLevel(node, depth + 1);
+  }
+  return html;
 }
 
 function renderChips(items) {
@@ -1471,25 +1506,8 @@ function renderList() {
     html += `<div class="combo-group">
       <div class="cg-header"><span class="char-badge">${ch ? ch.name : '？'}</span><span style="color:var(--text-muted)">${charCombos.length}件</span></div>`;
 
-    const groups = groupCombos(charCombos);
-    for (const g of groups) {
-      if (g.single || !g.common.length) {
-        const { combo } = g.branches[0];
-        html += `<div class="route-row">${renderChips(combo.route)}</div>${renderMeta(combo)}`;
-      } else {
-        html += `<div class="tree-common">${renderChips(g.common)}</div>
-          <div class="tree-branches">`;
-        g.branches.forEach(({ combo, tail }, bi) => {
-          const gl = bi === g.branches.length - 1 ? '└' : '├';
-          html += `<div class="tree-branch">
-            <span class="branch-glyph">${gl}</span>
-            ${renderChips(tail)}
-          </div>
-          <div style="padding:0 14px 2px 28px">${renderMeta(combo)}</div>`;
-        });
-        html += `</div>`;
-      }
-    }
+    const trie = buildTrie(charCombos);
+    html += renderTrieLevel(trie, 0);
     html += `</div>`;
   }
   return html;
@@ -1522,6 +1540,7 @@ function resetFilters() { S.filters = { charId:'', starterKey:'', dgMin:0, dgMax
 
 /* combo actions */
 async function editCombo(id) {
+  await loadAll();
   const combo = S.combos.find(c => String(c.id) === String(id));
   if (!combo) return;
   S.editId = id;
@@ -1951,6 +1970,10 @@ async function saveCombo() {
   // 保存直前にDOMのselect値をS.formに同期（onchangeが発火しなかった場合の保険）
   const charSel = document.getElementById('fc-char');
   if (charSel && charSel.value) S.form.charId = +charSel.value;
+  const memoEl = document.getElementById('fc-memo');
+  if (memoEl) S.form.memo = memoEl.value;
+  const dmgEl = document.getElementById('fc-dmg');
+  if (dmgEl && dmgEl.value !== '') S.form.damage = +dmgEl.value;
   const errs = validateForm();
   if (errs.length) { alert(errs.join('\n')); return; }
 
@@ -1966,8 +1989,9 @@ async function saveCombo() {
     updatedAt: Date.now(),
   };
   if (wasEdit && S.editId !== null) {
-    data.id = S.editId;
-    data.createdAt = S.combos.find(c => c.id === S.editId)?.createdAt || Date.now();
+    const origCombo = S.combos.find(c => String(c.id) === String(S.editId));
+    data.id = origCombo ? origCombo.id : S.editId;  // 元の型（数値/文字列）を保持
+    data.createdAt = origCombo?.createdAt || Date.now();
   } else {
     data.id = uid();
     data.createdAt = Date.now();
